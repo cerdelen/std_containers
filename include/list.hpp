@@ -34,9 +34,17 @@ namespace ft {
             list& operator=(const list& other) ;
             list(list&& other) {};
             list& operator=(list&& other) ;
-            ~list() {};
+            ~list() {
+                Node *ptr = this->_base.next;
+                Node *tmp = nullptr;
+                while(ptr != &this->_base) {
+                    tmp = ptr->next;
+                    __remove(ptr, false);
+                    ptr = tmp;
+                }
+            };
 
-            size_type size() const noexcept {return _size;};
+            inline size_type size() const noexcept {return _size;};
 
 
 
@@ -49,16 +57,7 @@ namespace ft {
             // Exceptions:
             //     If an exception is thrown for any reason, these functions have no effect (strong exception safety guarantee).
             void push_front(const T& value) {
-                Node* new_node = get_node(value);
-
-                new_node->next = this->_base.next;
-                new_node->prev = &(this->_base);
-
-                new_node->next->prev = new_node;
-
-                this->_base.next = new_node;
-
-                _size += 1;
+                __insert(this->_base, *this->_base.next, *get_node(value));
             };
 
             // Parameters:
@@ -70,17 +69,28 @@ namespace ft {
             // Exceptions:
             //     If an exception is thrown for any reason, these functions have no effect (strong exception safety guarantee).
             void push_back(const T& value) {
-                Node* new_node = get_node(value);
-
-                new_node->next = &(this->_base);
-                new_node->prev = this->_base.prev;
-
-                new_node->prev->next = new_node;
-
-                this->_base.prev = new_node;
-
-                _size += 1;
+                __insert(*this->_base.prev, this->_base, *get_node(value));
             };
+
+            // Parameters
+            //     (none)
+            //
+            // Return value
+            //     (none)
+            //
+            // Complexity
+            //     Constant.
+            //
+            // Exceptions
+            //      Throws nothing.
+            void pop_back() noexcept {
+                if (this->_size > 0)
+                    __remove(this->_base.prev, true);
+            }
+            void pop_front() noexcept {
+                if (this->_size > 0)
+                    __remove(this->_base.next, true);
+            }
 
             iterator begin() {return iterator(this->_base.next);};
             iterator end() {return iterator(&this->_base);};
@@ -101,6 +111,31 @@ namespace ft {
             };
             // const_reference back() const {};
 
+            // Parameters
+            //     count	-	new size of the container
+            //     value	-	the value to initialize the new elements with
+            // Type requirements
+            //     -T must meet the requirements of DefaultInsertable in order to use overload (1).
+            //     -T must meet the requirements of CopyInsertable in order to use overload (2).
+            // Complexity
+            //     Linear in the difference between the current size and count.
+            //
+            // Notes
+            //     If value-initialization in overload (1) is undesirable, for example, if the elements are of non-class type and zeroing out
+            //     is not needed, it can be avoided by providing a custom Allocator::construct.
+            void resize( size_type count ) {
+                value_type val{};
+                resize(count, val);
+            }
+            void resize( size_type count, const value_type& value ) {
+                while (count > _size) {
+                    this->push_back(value);
+                }
+                while (count < _size) {
+                    this->pop_back();
+                }
+            }
+
 
         private:
             struct Node {
@@ -116,12 +151,28 @@ namespace ft {
             allocator_type _alloc;
 
             // helper functions
-            void insert(Node& prev, Node& _new_node) {
-                _new_node.next = prev.next;
-                _new_node.prev = prev;
+            void __insert(Node& prev, Node& next, Node& _new_node) {
+                _new_node.next = &next;
+                _new_node.prev = &prev;
 
-                prev.next->prev = _new_node;
-                prev.next = _new_node;
+                next.prev = &_new_node;
+                prev.next = &_new_node;
+                this->_size++;
+                if (_new_node.next == &this->_base)
+                    this->_base.val = _new_node.val;
+            };
+
+            void __remove(Node* node, bool linking) noexcept {
+                this->_size -= 1;
+                if (linking) {
+                    node->next->prev = node->prev;
+                    node->prev->next = node->next;
+                    if (_size == 0)
+                        this->_base.val = value_type();
+                    else if (node->next == &this->_base)
+                        this->_base.val = this->_base.prev->val;
+                }
+                node_alloc.deallocate(node, 1);
             };
 
             Node* get_node(const T& val) {

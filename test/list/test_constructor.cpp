@@ -15,6 +15,7 @@ TEST(TestingList, Constructing_0_size) {
 TEST(TestingList, Simple_push_front) {
     ft::list<int> mine;
     std::list<int> orig;
+    EXPECT_EQ(orig.size(), mine.size());
 
     mine.push_front(1);
     orig.push_front(1);
@@ -161,3 +162,98 @@ TEST(TestingList, MixedPushes) {
     EXPECT_EQ(orig.size(), mine.size());
 }
 
+TEST(TestingList, PopBack) {
+    ft::list<int> mine;
+    std::list<int> orig;
+
+    mine.push_back(1);
+    orig.push_back(1);
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.push_back(2);
+    orig.push_back(2);
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.push_back(3);
+    orig.push_back(3);
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.push_back(4);
+    orig.push_back(4);
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.pop_back();
+    orig.pop_back();
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.pop_back();
+    orig.pop_back();
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.push_back(7);
+    orig.push_back(7);
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+    EXPECT_EQ(orig.size(), mine.size());
+}
+
+TEST(TestingList, resize) {
+    ft::list<int> mine;
+    std::list<int> orig;
+
+    mine.push_back(1);
+    orig.push_back(1);
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.push_back(2);
+    orig.push_back(2);
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.resize(0);
+    orig.resize(0);
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.push_back(3);
+    orig.push_back(3);
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.push_back(4);
+    orig.push_back(4);
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.pop_back();
+    orig.pop_back();
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.pop_back();
+    orig.pop_back();
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+    EXPECT_EQ(orig.size(), mine.size());
+
+    mine.resize(2);
+    orig.resize(2);
+    EXPECT_EQ(orig.size(), mine.size());
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+
+    mine.resize(5);
+    orig.resize(5);
+    EXPECT_EQ(orig.size(), mine.size());
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+
+    mine.resize(0);
+    orig.resize(0);
+    EXPECT_EQ(orig.size(), mine.size());
+    EXPECT_EQ(orig.back(), mine.back());
+    EXPECT_EQ(orig.front(), mine.front());
+}
