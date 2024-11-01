@@ -22,17 +22,30 @@ namespace ft {
 			typedef typename	allocator_type::size_type				size_type;
 
             typedef typename ft::list_iterator<Node> 					iterator;
-			// typedef	typename ft::const_random_access_iterator<const T>		const_iterator;
+			typedef	typename ft::const_list_iterator<const Node>		const_iterator;
 			// typedef typename ft::reverse_iterator<iterator>					reverse_iterator;
 			// typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
             list(): _size(0) {
                 this->_base.next = &(this->_base);
                 this->_base.prev = &(this->_base);
+                this->_base.val = T{};
             };
-            list(const list& other): _size(other._size){};
+            list(const list& other) {
+                this->_base.next = &(this->_base);
+                this->_base.prev = &(this->_base);
+                for (auto elem: other) {
+                    this->push_back(elem);
+                }
+            };
             list& operator=(const list& other) ;
-            list(list&& other) {};
+            list(const list&& other) {
+                this->_base.next = &(this->_base);
+                this->_base.prev = &(this->_base);
+                for (auto elem: other) {
+                    this->push_back(elem);
+                }
+            };
             list& operator=(list&& other) ;
             ~list() {
                 Node *ptr = this->_base.next;
@@ -46,6 +59,7 @@ namespace ft {
 
             inline size_type size() const noexcept {return _size;};
 
+            inline bool empty() const noexcept {return _size == 0;};
 
 
             // Parameters:
@@ -94,6 +108,8 @@ namespace ft {
 
             iterator begin() {return iterator(this->_base.next);};
             iterator end() {return iterator(&this->_base);};
+            const_iterator begin() const {return const_iterator(this->_base.next);};
+            const_iterator end() const {return const_iterator(&this->_base);};
 
             // Parameters
             //     (none)
