@@ -1,6 +1,3 @@
-#include <gtest/gtest.h>
-#include <list>
-#include <list.hpp>
 #include "ListTestBaseFixture.hpp"
 
 class ListCapacityTests : public ListTestBaseFixture { };

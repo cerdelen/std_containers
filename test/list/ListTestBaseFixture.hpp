@@ -16,6 +16,11 @@ class ListTestBaseFixture : public ::testing::Test {
             EXPECT_EQ(mine.empty(), orig.empty());
         }
 
+        void quick_capacity_check() {
+            EXPECT_EQ(mine.size(), orig.size());
+            EXPECT_EQ(mine.empty(), orig.empty());
+        }
+
         void push_back(const int val) {
             mine.push_back(val);
             orig.push_back(val);
@@ -44,5 +49,10 @@ class ListTestBaseFixture : public ::testing::Test {
         void resize(std::size_t count, int val) {
             mine.resize(count, val);
             orig.resize(count, val);
+        }
+
+        void front_back_compare() {
+            EXPECT_EQ(mine.front(), orig.front());
+            EXPECT_EQ(mine.back(), orig.back());
         }
 };
