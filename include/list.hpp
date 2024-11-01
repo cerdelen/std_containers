@@ -26,25 +26,25 @@ namespace ft {
 			// typedef typename ft::reverse_iterator<iterator>					reverse_iterator;
 			// typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
-            list(): _size(0) {
+            list() {
                 this->_base.next = &(this->_base);
                 this->_base.prev = &(this->_base);
                 this->_base.val = T{};
             };
             list(const list& other) {
-                this->_base.next = &(this->_base);
-                this->_base.prev = &(this->_base);
-                for (auto elem: other) {
-                    this->push_back(elem);
-                }
+                *this = other;
             };
-            list& operator=(const list& other) ;
-            list(const list&& other) {
+            list& operator=(const list& other) {
                 this->_base.next = &(this->_base);
                 this->_base.prev = &(this->_base);
+                // this push back unnecessarily overwrites _base.value often
                 for (auto elem: other) {
                     this->push_back(elem);
                 }
+                return *this;
+            }
+            list(const list&& other) {
+                *this = other;
             };
             list& operator=(list&& other) ;
             ~list() {
@@ -61,6 +61,8 @@ namespace ft {
 
             inline bool empty() const noexcept {return _size == 0;};
 
+
+            void clear() {};
 
             // Parameters:
             //     value: the value of the element to prepend
@@ -160,7 +162,7 @@ namespace ft {
                 T      val;
                 typedef T value_type;
             };
-            size_type   _size;
+            size_type   _size = 0;
             Node        _base;
 
             std::allocator<Node> node_alloc;

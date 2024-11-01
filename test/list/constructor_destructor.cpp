@@ -29,16 +29,16 @@ void pop_back(std::unique_ptr<testing_pair>& pair_ptr) {
 std::unique_ptr<testing_pair> init_test_pair(size_t size) {
     ft::list<int> mine;
     std::list<int> orig;
-    // auto out = std::make_unique<testing_pair>(orig, mine);
-    std::cout << "before make unique and std::pair constructor " << std::endl;
     auto out = std::make_unique<testing_pair>(orig, mine);
-    std::cout << "after k make unique and std::pair constructor " << std::endl;
+    EXPECT_EQ(out->first.size(), out->second.size());
     for (int i = size; i > size / 2; i--) {
         push_front(out, i);
     }
     for (int i = size / 2; i > 0; i--) {
         push_back(out, i);
     }
+
+    EXPECT_EQ(out->first.size(), out->second.size());
 
     return out;
 }
@@ -49,25 +49,35 @@ void quick_equal_check(const std::unique_ptr<testing_pair>& pair_ptr) {
     EXPECT_EQ(pair_ptr->first.size(), pair_ptr->second.size());
 }
 
+// class ListTests : public ::testing::Test {
+//     protected:
+//         std::unique_ptr<testing_pair> test_pair;
+//         void SetUp() override {
+//             ft::list<int> mine;
+//             std::list<int> orig;
+//             test_pair = std::make_unique<testing_pair>(orig, mine);
+//         }
+// };
 
 
-TEST(TestingList, Testing_test_functions) {
+
+TEST(ListTests, Testing_test_functions) {
     auto pair = init_test_pair(10);
     quick_equal_check(pair);
 }
 
 
-TEST(TestingList, Constructing) {
+TEST(ListTests, Constructing) {
     ft::list<int> mine;
 }
 
-TEST(TestingList, Constructing_0_size) {
+TEST(ListTests, Constructing_0_size) {
     ft::list<int> mine;
     std::list<int> orig;
     EXPECT_EQ(orig.size(), mine.size());
 }
 
-TEST(TestingList, Simple_push_front) {
+TEST(ListTests, Simple_push_front) {
     ft::list<int> mine;
     std::list<int> orig;
     // EXPECT_EQ(orig.back(), mine.back());
@@ -82,7 +92,7 @@ TEST(TestingList, Simple_push_front) {
     EXPECT_EQ(orig.size(), mine.size());
 }
 
-TEST(TestingList, Multiple_push_front_size) {
+TEST(ListTests, Multiple_push_front_size) {
     ft::list<int> mine;
     std::list<int> orig;
 
@@ -103,7 +113,7 @@ TEST(TestingList, Multiple_push_front_size) {
     EXPECT_EQ(orig.size(), mine.size());
 }
 
-TEST(TestingList, MultipleFrontCalls) {
+TEST(ListTests, MultipleFrontCalls) {
     ft::list<int> mine;
     std::list<int> orig;
 
@@ -125,7 +135,7 @@ TEST(TestingList, MultipleFrontCalls) {
     EXPECT_EQ(orig.front(), mine.front());
 }
 
-TEST(TestingList, Multiple_push_back_size) {
+TEST(ListTests, Multiple_push_back_size) {
     ft::list<int> mine;
     std::list<int> orig;
 
@@ -146,7 +156,7 @@ TEST(TestingList, Multiple_push_back_size) {
     EXPECT_EQ(orig.size(), mine.size());
 }
 
-TEST(TestingList, MultipleBackCalls) {
+TEST(ListTests, MultipleBackCalls) {
     ft::list<int> mine;
     std::list<int> orig;
 
@@ -168,12 +178,12 @@ TEST(TestingList, MultipleBackCalls) {
     EXPECT_EQ(orig.back(), mine.back());
 }
 
-TEST(TestingList, MixedPushes) {
+TEST(ListTests, MixedPushes) {
     auto pair = init_test_pair(10);
     quick_equal_check(pair);
 }
 
-TEST(TestingList, PopBack) {
+TEST(ListTests, PopBack) {
     auto pair = init_test_pair(10);
     quick_equal_check(pair);
 
@@ -187,7 +197,7 @@ TEST(TestingList, PopBack) {
     quick_equal_check(pair);
 }
 
-TEST(TestingList, resize) {
+TEST(ListTests, resize) {
     auto pair = init_test_pair(10);
     quick_equal_check(pair);
 

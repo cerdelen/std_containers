@@ -18,18 +18,19 @@ enable_testing()
 
 include_directories(include)
 
-add_executable(
-  list
-  ./test/list/test_constructor.cpp
-)
+# Collect all .cpp files in ./test/list
+file(GLOB test_list_sources "./test/list/*.cpp")
+
+# Add executable with all source files in ./test/list
+add_executable(test_list ${test_list_sources})
 
 # target_include_directories(list PRIVATE ./include)
 
 target_link_libraries(
-  list
+  test_list
   GTest::gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(list)
+gtest_discover_tests(test_list)
 
