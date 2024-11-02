@@ -61,6 +61,40 @@ namespace ft {
 
             inline bool empty() const noexcept {return _size == 0;};
 
+            // Parameters:
+            //     pos          -	iterator to the element to remove
+            //     first, last	-	range of elements to remove
+            // Return value:
+            //     1) If pos refers to the last element, then the end() iterator is returned.
+            //     2) If last == end() prior to removal, then the updated end() iterator is returned.
+            //            If [first, last) is an empty range, then last is returned.
+            // Complexity:
+            //     1) Constant
+            //     2) Linear in distance between first and last
+            // Exceptions:
+            //     No Exceptions
+            iterator erase( iterator pos ) noexcept { return this->begin();};
+            iterator erase( iterator first, iterator last ) noexcept{ return this->begin();};
+
+            // Parameters:
+            //     pos          -	iterator before which the content will be inserted (pos may be the end() iterator)
+            //     value	    -	element value to insert
+            //     count	    -	number of elements to insert
+            //     first, last	-	the range of elements to insert, cannot be iterators into container for which insert is called
+            // Return value:
+            //     1) Iterator pointing to the inserted value.
+            //     2) Iterator pointing to the first element inserted, or pos if count == 0.
+            //     3) Iterator pointing to the first element inserted, or pos if first == last.
+            // Complexity:
+            //     1) Constant
+            //     2) Linear in count
+            //     3) Linear in std::distance(first, last).
+            // Exceptions:
+            //     If an exception is thrown for any reason, these functions have no effect (strong exception safety guarantee).
+            iterator insert( const_iterator pos, const T& value ) { return this->begin();};
+            iterator insert( const_iterator pos, size_type count, const T& value ) { return this->begin();};
+            template< class InputIt >
+            iterator insert( const_iterator pos, InputIt first, InputIt last ) { return this->begin();};
 
             void clear() {};
 
@@ -201,3 +235,39 @@ namespace ft {
             };
     };
 }
+
+
+
+
+
+template< class T, class Alloc >
+bool operator==( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) {
+    if (lhs.size() != rhs.size())
+        return false;
+    typename ft::list<T, Alloc>::const_iterator l_it = lhs.begin();
+    typename ft::list<T, Alloc>::const_iterator r_it = rhs.begin();
+    while(l_it != lhs.end()) {
+        if (*l_it != *r_it)
+            return false;
+        l_it++;
+        r_it++;
+    }
+    return true;
+};
+
+template< class T, class Alloc >
+bool operator!=( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) {
+    return !(lhs == rhs);
+};
+
+template< class T, class Alloc >
+bool operator<( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) { return true; };
+
+template< class T, class Alloc >
+bool operator<=( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) { return true; };
+
+template< class T, class Alloc >
+bool operator>( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) { return true; };
+
+template< class T, class Alloc >
+bool operator>=( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) { return true; };
