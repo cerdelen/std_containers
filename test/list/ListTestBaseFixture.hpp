@@ -16,6 +16,22 @@ class ListTestBaseFixture : public ::testing::Test {
             EXPECT_EQ(mine.empty(), orig.empty());
         }
 
+        template <typename IteratorType1, typename IteratorType2>
+        void increment_iterator(IteratorType1& my_it, IteratorType2& orig_it, size_t count = 1) {
+            for (std::size_t i = 0; i < count; i++) {
+                my_it++;
+                orig_it++;
+            }
+        }
+
+        template <typename IteratorType1, typename IteratorType2>
+        void decrement_iterator(IteratorType1& my_it, IteratorType2& orig_it, size_t count = 1) {
+            for (std::size_t i = 0; i < count; i++) {
+                my_it--;
+                orig_it--;
+            }
+        }
+
         void quick_capacity_check() {
             EXPECT_EQ(mine.size(), orig.size());
             EXPECT_EQ(mine.empty(), orig.empty());

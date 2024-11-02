@@ -145,6 +145,16 @@ namespace ft {
 				return (tmp);
 			}
 
+			bool				operator==( const list_iterator<node_type> & other ) const
+			{
+				return (_ptr == other._ptr);
+			}
+
+			bool				operator!=( const list_iterator<node_type> & other ) const
+			{
+				return (_ptr != other._ptr);
+			}
+
 			bool				operator==( const const_list_iterator<node_type> & other ) const
 			{
 				return (_ptr == other._ptr);
@@ -154,16 +164,6 @@ namespace ft {
 			{
 				return (_ptr != other._ptr);
 			}
-
-			// bool				operator==( const const_rbt_iterator_new<node_type> & other ) const
-			// {
-			// 	return (_ptr == other._ptr);
-			// }
-			//
-			// bool				operator!=( const const_rbt_iterator_new<node_type> & other ) const
-			// {
-			// 	return (_ptr != other._ptr);
-			// }
 
         protected:
             node_ptr			_ptr;

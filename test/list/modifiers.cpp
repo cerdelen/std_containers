@@ -95,6 +95,21 @@ TEST_F(ListModifiersTests, resize_filled_to_bigger) {
     front_back_compare();
 }
 
+TEST_F(ListModifiersTests, resize_empty_to_bigger_no_value_givven) {
+    mine.resize(16);
+    orig.resize(16);
+    quick_capacity_check();
+    front_back_compare();
+}
+
+TEST_F(ListModifiersTests, resize_filled_to_bigger_no_value_givven) {
+    init_fill(8);
+    mine.resize(16);
+    orig.resize(16);
+    quick_capacity_check();
+    front_back_compare();
+}
+
 // // swap
 // TEST_F(ListModifiersTests, Name) {
 // }
