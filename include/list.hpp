@@ -47,15 +47,7 @@ namespace ft {
                 *this = other;
             };
             list& operator=(list&& other) ;
-            ~list() {
-                Node *ptr = this->_base.next;
-                Node *tmp = nullptr;
-                while(ptr != &this->_base) {
-                    tmp = ptr->next;
-                    __remove(ptr, false);
-                    ptr = tmp;
-                }
-            };
+            ~list() { this->clear(); };
 
             inline size_type size() const noexcept {return _size;};
 
@@ -96,7 +88,16 @@ namespace ft {
             template< class InputIt >
             iterator insert( const_iterator pos, InputIt first, InputIt last ) { return this->begin();};
 
-            void clear() {};
+            void clear() {
+                Node* ptr = this->_base.next;
+
+                while(ptr != &this->_base) {
+                    ptr = ptr->next;
+                    __remove(ptr->prev, false);
+                }
+                this->_base.next = &this->_base;
+                this->_base.prev = &this->_base;
+            };
 
             // Parameters:
             //     value: the value of the element to prepend
