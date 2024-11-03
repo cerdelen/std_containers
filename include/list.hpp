@@ -38,22 +38,35 @@ namespace ft {
             };
             list& operator=(const list& other) {
                 this->clear();
-                this->_base.next = &(this->_base);
-                this->_base.prev = &(this->_base);
-                // this push back unnecessarily overwrites _base.value often
-                for (auto elem: other) {
-                    this->push_back(elem);
+                if (other._size == 0) {
+                    this->_base.val = T{};
+                    return *this;
                 }
-                if (_size == 0)
-                    this->_base.val = other._base.val;
+                Node* ptr = other._base.prev;
+                while (ptr != &other._base) {
+                    this->push_front(ptr->val);
+                    ptr = ptr->prev;
+                }
                 return *this;
-            }
+            };
             list(const list&& other) {
                 this->_base.next = &(this->_base);
                 this->_base.prev = &(this->_base);
                 *this = other;
             };
-            list& operator=(list&& other) ;
+            list& operator=(list&& other) {
+                this->clear();
+                if (other._size == 0) {
+                    this->_base.val = T{};
+                    return *this;
+                }
+                Node* ptr = other._base.prev;
+                while (ptr != &other._base) {
+                    this->push_front(ptr->val);
+                    ptr = ptr->prev;
+                }
+                return *this;
+            };
             ~list() { this->clear(); };
 
             inline size_type size() const noexcept {return _size;};
