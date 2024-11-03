@@ -44,6 +44,8 @@ namespace ft {
                 for (auto elem: other) {
                     this->push_back(elem);
                 }
+                if (_size == 0)
+                    this->_base.val = other._base.val;
                 return *this;
             }
             list(const list&& other) {
