@@ -61,6 +61,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_empty_to_empty) {
     ft::list<int> mine2;
     mine2 = mine;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
 }
 
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_empty_to_filled) {
@@ -71,6 +72,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_empty_to_filled) {
     mine.push_back(3);
     mine2 = mine;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
 }
 
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_empty) {
@@ -81,6 +83,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_empty) {
     mine.push_back(3);
     mine = mine2;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
 }
 
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_equal_to_equal_filled) {
@@ -94,6 +97,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_equal_to_equal_filled
     mine2.push_back(3);
     mine = mine2;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
 }
 
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_same_size_different_content) {
@@ -107,6 +111,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_same
     mine2.push_back(6);
     mine = mine2;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
 }
 
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_smalle_to_bigger_different_content) {
@@ -118,6 +123,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_smal
     mine2.push_back(6);
     mine = mine2;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
 }
 
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_smalle_to_bigger_same_until_additional_content) {
@@ -129,6 +135,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_smal
     mine2.push_back(3);
     mine = mine2;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
 }
 
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_bigger_to_smaller_different_content) {
@@ -140,6 +147,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_bigg
     mine2.push_back(6);
     mine2 = mine;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
 }
 
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_bigger_to_smaller_same_until_additional_content) {
@@ -151,5 +159,7 @@ TEST_F(ListConstructorDestructorTests, equal_sign_operator_filled_to_filled_bigg
     mine2.push_back(3);
     mine2 = mine;
     EXPECT_TRUE(mine == mine2);
+    EXPECT_EQ(*mine.end(), *mine2.end());
+    EXPECT_EQ(*mine2.end(), 0);
 }
 
