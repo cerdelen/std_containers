@@ -37,6 +37,8 @@ namespace ft {
                 *this = other;
             };
             list& operator=(const list& other) {
+                if (this == &other)
+                    return *this;
                 this->clear();
                 if (other._size == 0) {
                     this->_base.val = T{};
@@ -55,6 +57,8 @@ namespace ft {
                 *this = other;
             };
             list& operator=(list&& other) {
+                if (this == &other)
+                    return *this;
                 this->clear();
                 if (other._size == 0) {
                     this->_base.val = T{};
@@ -271,6 +275,8 @@ template< class T, class Alloc >
 bool operator==( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) {
     if (lhs.size() != rhs.size())
         return false;
+    if (&lhs == &rhs)
+        return true;
     typename ft::list<T, Alloc>::const_iterator l_it = lhs.begin();
     typename ft::list<T, Alloc>::const_iterator r_it = rhs.begin();
     while(l_it != lhs.end()) {
@@ -289,6 +295,8 @@ bool operator!=( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) 
 
 template< class T, class Alloc >
 bool operator<( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) {
+    if (&lhs == &rhs)
+        return false;
     typename ft::list<T, Alloc>::const_iterator l_it = lhs.begin();
     typename ft::list<T, Alloc>::const_iterator r_it = rhs.begin();
     while (l_it != lhs.end() && r_it != rhs.end()) {
@@ -308,6 +316,8 @@ bool operator<( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) {
 
 template< class T, class Alloc >
 bool operator>( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) {
+    if (&lhs == &rhs)
+        return false;
     typename ft::list<T, Alloc>::const_iterator l_it = lhs.begin();
     typename ft::list<T, Alloc>::const_iterator r_it = rhs.begin();
     while (l_it != lhs.end() && r_it != rhs.end()) {

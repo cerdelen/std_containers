@@ -45,6 +45,7 @@ TEST_F(ListConstructorDestructorTests, copy_constructor_filled_same_front_back) 
 
 // I am using == sign overload which is not ideal to use your own implementations
 //      to test your other implementations but == is tested against original
+// equal sign one itself
 // equal sign empty to empty
 // equal sign empty to filled
 // equal sign filled to empty
@@ -56,6 +57,17 @@ TEST_F(ListConstructorDestructorTests, copy_constructor_filled_same_front_back) 
 //          same bigger to smaller size, equal contents until the bigger has more
 //          same bigger to smaller size, different contents
 //
+TEST_F(ListConstructorDestructorTests, equal_sign_operator_on_itself) {
+    mine = mine;
+    EXPECT_EQ(mine.size(), 0);
+    EXPECT_EQ(mine.front(), 0);
+    // important: == operator has to pass tests
+    mine.push_back(1);
+    mine = mine;
+    EXPECT_EQ(mine.size(), 1);
+    EXPECT_EQ(mine.front(), 1);
+}
+
 TEST_F(ListConstructorDestructorTests, equal_sign_operator_empty_to_empty) {
     // important: == operator has to pass tests
     ft::list<int> mine2;
