@@ -32,9 +32,12 @@ namespace ft {
                 this->_base.val = T{};
             };
             list(const list& other) {
+                this->_base.next = &(this->_base);
+                this->_base.prev = &(this->_base);
                 *this = other;
             };
             list& operator=(const list& other) {
+                this->clear();
                 this->_base.next = &(this->_base);
                 this->_base.prev = &(this->_base);
                 // this push back unnecessarily overwrites _base.value often
@@ -44,6 +47,8 @@ namespace ft {
                 return *this;
             }
             list(const list&& other) {
+                this->_base.next = &(this->_base);
+                this->_base.prev = &(this->_base);
                 *this = other;
             };
             list& operator=(list&& other) ;
@@ -196,6 +201,12 @@ namespace ft {
                 Node* prev;
                 T      val;
                 typedef T value_type;
+                // this would be good coding praxis but in praxis except for constructor of lsit itself
+                // this would only unnecessarily set next and prev 2 times
+                // Node() {
+                //     this->next = this;
+                //     this->prev = this;
+                // }
             };
             size_type   _size = 0;
             Node        _base;
