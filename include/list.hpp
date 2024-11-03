@@ -265,12 +265,14 @@ bool operator<( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) {
     typename ft::list<T, Alloc>::const_iterator l_it = lhs.begin();
     typename ft::list<T, Alloc>::const_iterator r_it = rhs.begin();
     while (l_it != lhs.end() && r_it != rhs.end()) {
+        if ( *l_it == *r_it ) {
+            l_it++;
+            r_it++;
+            continue; ;
+        }
         if ( *l_it < *r_it )
             return true;
-        if ( *l_it > *r_it )
-            return false;
-        l_it++;
-        r_it++;
+        return false;
     }
     if ( r_it != rhs.end() )
         return true;
@@ -282,12 +284,14 @@ bool operator>( const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs ) {
     typename ft::list<T, Alloc>::const_iterator l_it = lhs.begin();
     typename ft::list<T, Alloc>::const_iterator r_it = rhs.begin();
     while (l_it != lhs.end() && r_it != rhs.end()) {
+        if ( *l_it == *r_it ) {
+            l_it++;
+            r_it++;
+            continue; ;
+        }
         if ( *l_it > *r_it )
             return true;
-        if ( *l_it < *r_it )
-            return false;
-        l_it++;
-        r_it++;
+        return false;
     }
     if ( l_it != lhs.end() )
         return true;

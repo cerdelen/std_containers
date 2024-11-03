@@ -66,20 +66,15 @@ TEST_F(ListNonMemberFunctionsTests, inequality_operator) {
 // an equal list
 // { 1 }
 // { 1 }
-// check 1 < 2 checking equal should be false
 //
 // one unequal list by size
 // push_back_
 // { 1, 99 }
 // { 1 }
-// check 1 < 2 checking equal should be false
-// check 2 < 1 checking equal should be true
 //
 // one equal size list with unequal contents
 // { 1, 99 }
 // { 1, 2 }
-// check 1 < 2 checking equal should be false
-// check 2 < 1 checking equal should be true
 TEST_F(ListNonMemberFunctionsTests, less_than_operator) {
     ft::list<int>   mine1(mine);
     std::list<int>  orig1(orig);
