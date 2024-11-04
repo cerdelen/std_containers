@@ -2,9 +2,11 @@
 #include "iterator_base.hpp"
 
 namespace ft {
+    template<class node_type>
+	struct const_list_iterator;
 
     template<class node_type>
-	class list_iterator : ft::iterator<ft::bidirectional_iterator_tag, typename node_type::value_type>
+	struct list_iterator : ft::iterator<ft::bidirectional_iterator_tag, typename node_type::value_type>
 	{
         public:
             typedef typename	node_type::value_type																	value_type;
@@ -72,22 +74,23 @@ namespace ft {
 				return (_ptr != other._ptr);
 			}
 
-			// bool				operator==( const const_rbt_iterator_new<node_type> & other ) const
-			// {
-			// 	return (_ptr == other._ptr);
-			// }
-			//
-			// bool				operator!=( const const_rbt_iterator_new<node_type> & other ) const
-			// {
-			// 	return (_ptr != other._ptr);
-			// }
+            template<typename T>
+			bool				operator==( const const_list_iterator<T> & other ) const
+			{
+				return (_ptr == other._ptr);
+			}
 
-        protected:
+            template<typename T>
+			bool				operator!=( const const_list_iterator<T> & other ) const
+			{
+				return (_ptr != other._ptr);
+			}
+
             node_ptr			_ptr;
     };
 
     template<class node_type>
-	class const_list_iterator : ft::iterator<ft::bidirectional_iterator_tag, typename node_type::value_type>
+	struct const_list_iterator : ft::iterator<ft::bidirectional_iterator_tag, typename node_type::value_type>
 	{
         public:
             typedef const typename	node_type::value_type																value_type;
@@ -107,9 +110,18 @@ namespace ft {
 
 			const_list_iterator(node_ptr input) : _ptr(input) { }
 
+            template<typename T>
+			const_list_iterator(const list_iterator<T> &copy) { *this = copy; }
+
 			const_list_iterator(const const_list_iterator &copy) { *this = copy; }
 
 			const_list_iterator	&operator=(const const_list_iterator &copy) {
+				_ptr = copy._ptr;
+				return (*this);
+			}
+
+            template<typename T>
+			const_list_iterator	&operator=(const list_iterator<T> &copy) {
 				_ptr = copy._ptr;
 				return (*this);
 			}
@@ -145,16 +157,6 @@ namespace ft {
 				return (tmp);
 			}
 
-			bool				operator==( const list_iterator<node_type> & other ) const
-			{
-				return (_ptr == other._ptr);
-			}
-
-			bool				operator!=( const list_iterator<node_type> & other ) const
-			{
-				return (_ptr != other._ptr);
-			}
-
 			bool				operator==( const const_list_iterator<node_type> & other ) const
 			{
 				return (_ptr == other._ptr);
@@ -165,7 +167,18 @@ namespace ft {
 				return (_ptr != other._ptr);
 			}
 
-        protected:
+            template<typename T>
+			bool				operator==( const list_iterator<T> & other ) const
+			{
+				return (_ptr == other._ptr);
+			}
+
+            template<typename T>
+			bool				operator!=( const list_iterator<T> & other ) const
+			{
+				return (_ptr != other._ptr);
+			}
+
             node_ptr			_ptr;
     };
 }

@@ -22,7 +22,7 @@ namespace ft {
 			typedef typename	allocator_type::size_type				size_type;
 
             typedef typename ft::list_iterator<Node> 					iterator;
-			typedef	typename ft::const_list_iterator<const Node>		const_iterator;
+			typedef	typename ft::const_list_iterator<const Node>		        const_iterator;
 			// typedef typename ft::reverse_iterator<iterator>					reverse_iterator;
 			// typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
