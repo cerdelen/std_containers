@@ -45,10 +45,109 @@ TEST_F(ListModifiersTests, clear_after_push_and_pop) {
     quick_capacity_check();
 }
 
-// // insert
-// TEST_F(ListModifiersTests, Name) {
-// }
+// insert
+// 1, 2, 3
+// for each insert into empty
+//      at begin and at end     -- this is done
+// for each insert into filled
+//      at begin, in middle at end
 //
+//  for count and range 1 with empty count
+//                      1 with single range/count
+//                      1 with more than 1 range/count
+TEST_F(ListModifiersTests, count_empty_insert_into_empty_at_begin) {
+    mine.insert(mine.begin(), 0, 8);
+    EXPECT_EQ(mine.size(), 0);
+    EXPECT_EQ(mine.back(), 0);
+    EXPECT_EQ(mine.front(), 0);
+}
+
+TEST_F(ListModifiersTests, single_insert_into_empty_at_begin) {
+    mine.insert(mine.begin(), 8);
+    EXPECT_EQ(mine.size(), 1);
+    EXPECT_EQ(mine.back(), 8);
+    EXPECT_EQ(mine.front(), 8);
+}
+
+TEST_F(ListModifiersTests, count_single_insert_into_empty_at_begin) {
+    mine.insert(mine.begin(), 1, 8);
+    EXPECT_EQ(mine.size(), 1);
+    EXPECT_EQ(mine.back(), 8);
+    EXPECT_EQ(mine.front(), 8);
+}
+
+TEST_F(ListModifiersTests, range_single_insert_into_empty_at_begin) {
+    ft::list<int> other;
+    other.push_back(1);
+    mine.insert(mine.begin(), other.begin(), other.begin());
+    EXPECT_EQ(mine.size(), 1);
+    EXPECT_EQ(mine.front(), 1);
+    EXPECT_EQ(mine.back(), 1);
+}
+
+TEST_F(ListModifiersTests, count_multiple_insert_into_empty_at_begin) {
+    mine.insert(mine.begin(), 2, 8);
+    EXPECT_EQ(mine.size(), 2);
+    EXPECT_EQ(mine.back(), 8);
+    EXPECT_EQ(mine.front(), 8);
+}
+
+TEST_F(ListModifiersTests, range_multiple_insert_into_empty_at_begin) {
+    std::list<int> other;
+    other.push_back(1);
+    other.push_back(2);
+    mine.insert(mine.begin(), other.begin(), other.begin());
+    EXPECT_EQ(mine.size(), 2);
+    EXPECT_EQ(mine.front(), 1);
+    EXPECT_EQ(mine.back(), 2);
+}
+
+TEST_F(ListModifiersTests, count_empty_insert_into_empty_at_end) {
+    mine.insert(mine.end(), 0, 8);
+    EXPECT_EQ(mine.size(), 0);
+    EXPECT_EQ(mine.back(), 0);
+    EXPECT_EQ(mine.front(), 0);
+}
+
+TEST_F(ListModifiersTests, single_insert_into_empty_at_end_at_end) {
+    mine.insert(mine.end(), 8);
+    EXPECT_EQ(mine.size(), 1);
+    EXPECT_EQ(mine.back(), 8);
+    EXPECT_EQ(mine.front(), 8);
+}
+
+TEST_F(ListModifiersTests, count_single_insert_into_empty_at_end) {
+    mine.insert(mine.end(), 1, 8);
+    EXPECT_EQ(mine.size(), 1);
+    EXPECT_EQ(mine.back(), 8);
+    EXPECT_EQ(mine.front(), 8);
+}
+
+TEST_F(ListModifiersTests, range_single_insert_into_empty_at_end) {
+    ft::list<int> other;
+    other.push_back(1);
+    mine.insert(mine.end(), other.begin(), other.begin());
+    EXPECT_EQ(mine.size(), 1);
+    EXPECT_EQ(mine.front(), 1);
+    EXPECT_EQ(mine.back(), 1);
+}
+
+TEST_F(ListModifiersTests, count_multiple_insert_into_empty_at_end) {
+    mine.insert(mine.end(), 2, 8);
+    EXPECT_EQ(mine.size(), 2);
+    EXPECT_EQ(mine.back(), 8);
+    EXPECT_EQ(mine.front(), 8);
+}
+
+TEST_F(ListModifiersTests, range_multiple_insert_into_empty_at_end) {
+    std::list<int> other;
+    other.push_back(1);
+    other.push_back(2);
+    mine.insert(mine.end(), other.begin(), other.begin());
+    EXPECT_EQ(mine.size(), 2);
+    EXPECT_EQ(mine.front(), 1);
+    EXPECT_EQ(mine.back(), 2);
+}
 // // erase
 // TEST_F(ListModifiersTests, Name) {
 // }

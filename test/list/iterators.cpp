@@ -3,6 +3,13 @@
 class ListIteratorTests : public ListTestBaseFixture { };
 
 // iterator
+TEST_F(ListIteratorTests, conversion_iterator_to_const_iterator) {
+    ft::list<int>::iterator             my_it = mine.begin();
+    ft::list<int>::const_iterator       my_const_it(my_it);
+    ft::list<int>::const_iterator       my_const_it2;
+    my_const_it2 = my_it;
+}
+
 TEST_F(ListIteratorTests, begin_iterator_after_construct) {
     ft::list<int>::iterator     my_it = mine.begin();
     std::list<int>::iterator    orig_it = orig.begin();
