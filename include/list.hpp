@@ -108,15 +108,35 @@ namespace ft {
             // Exceptions:
             //     If an exception is thrown for any reason, these functions have no effect (strong exception safety guarantee).
             iterator insert( const_iterator pos, const T& value ) {
-                Node* prev = (Node*)pos._ptr->prev;
-                Node* next = (Node*)pos._ptr;
-                Node* new_node = get_node(value);
-                __insert(*prev, *next, *new_node);
-                return iterator(new_node);
+                // std::cout << "single insert called" << std::endl;
+                __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *get_node(value));
+                return iterator(pos._ptr->prev);
             };
-            iterator insert( const_iterator pos, size_type count, const T& value ) { return this->begin();};
-            template< class InputIt >
-            iterator insert( const_iterator pos, InputIt first, InputIt last ) { return this->begin();};
+            iterator insert( const_iterator pos, size_type count, const T& value ) {
+                // std::cout << "count insert called" << std::endl;
+                if (count == 0) {
+                    return iterator((Node*)pos._ptr);
+                }
+                for (; count > 0; count--, pos--) {
+                    __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *get_node(value));
+                }
+                return iterator((Node*)pos._ptr);
+            };
+
+            // second parameter is to ensure that if the second template is indeed size_type the correct insert gets caleld and not this one
+            template< class InputIt , typename = typename std::enable_if<!std::is_integral<InputIt>::value>::type>
+            iterator insert( const_iterator pos, InputIt first, InputIt last ) {
+                std::cout << "range insert called" << std::endl;
+                if (first == last) {
+                    return iterator((Node*)pos._ptr);
+                }
+                iterator out((Node*)pos._ptr->prev);
+                for (; first != last; first++) {
+                    __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *get_node(*first));
+                }
+                return ++out;
+                // return this->begin();
+            };
 
             void clear() {
                 Node* ptr = this->_base.next;
