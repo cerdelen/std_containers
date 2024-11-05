@@ -107,7 +107,13 @@ namespace ft {
             //     3) Linear in std::distance(first, last).
             // Exceptions:
             //     If an exception is thrown for any reason, these functions have no effect (strong exception safety guarantee).
-            iterator insert( const_iterator pos, const T& value ) { return this->begin();};
+            iterator insert( const_iterator pos, const T& value ) {
+                Node* prev = (Node*)pos._ptr->prev;
+                Node* next = (Node*)pos._ptr;
+                Node* new_node = get_node(value);
+                __insert(*prev, *next, *new_node);
+                return iterator(new_node);
+            };
             iterator insert( const_iterator pos, size_type count, const T& value ) { return this->begin();};
             template< class InputIt >
             iterator insert( const_iterator pos, InputIt first, InputIt last ) { return this->begin();};
@@ -211,6 +217,16 @@ namespace ft {
                 while (count < _size) {
                     this->pop_back();
                 }
+            }
+
+
+
+            void print(){
+                std::cout << "[ ";
+                for(iterator it = this->begin(); it != this->end(); it++){
+                    std::cout << *it << ", ";
+                }
+                std::cout << "]" << std::endl;
             }
 
 

@@ -48,334 +48,382 @@ TEST_F(ListModifiersTests, clear_after_push_and_pop) {
 // Insert
 
 TEST_F(ListModifiersTests, single_insert_into_empty_at_begin) {
-    mine.insert(mine.begin(), 8);
-    EXPECT_EQ(mine.size(), 1);
-    EXPECT_EQ(mine.back(), 8);
-    EXPECT_EQ(mine.front(), 8);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.insert(pos, 8);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 8);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*ret, 8);
+    EXPECT_TRUE(++pos == ret);
 }
 
 TEST_F(ListModifiersTests, single_insert_into_empty_at_end) {
-    mine.insert(mine.end(), 8);
-    EXPECT_EQ(mine.size(), 1);
-    EXPECT_EQ(mine.back(), 8);
-    EXPECT_EQ(mine.front(), 8);
+    ft::list<int>::iterator pos = mine.end();
+    ft::list<int>::iterator ret = mine.insert(pos, 8);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 8);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*ret, 8);
+    EXPECT_TRUE(++pos == ret);
 }
 
 TEST_F(ListModifiersTests, single_insert_into_filled_at_begin) {
     mine.push_back(2);
     mine.push_back(3);
-    mine.insert(mine.begin(), 1);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.insert(pos, 1);
     ft::list<int>::iterator it = mine.begin();
-    EXPECT_EQ(*(it++), 1);
-    EXPECT_EQ(*(it++), 2);
-    EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+
+    EXPECT_EQ(*it, 1);
+    it++;
+    EXPECT_EQ(*it, 2);
+    it++;
+    EXPECT_EQ(*it, 3);
+    it++;
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*ret, 1);
+    EXPECT_TRUE(++pos == ret);
+
+    mine.print();
 }
 
 TEST_F(ListModifiersTests, single_insert_into_filled_in_the_middle) {
     mine.push_back(1);
     mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    ft::list<int>::iterator ret = mine.insert(pos, 2);
     ft::list<int>::iterator it = mine.begin();
-    it++;
-    mine.insert(it, 2);
-    it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*ret, 2);
+    EXPECT_TRUE(++pos == ret);
+    mine.print();
 }
 
 TEST_F(ListModifiersTests, single_insert_into_filled_at_end) {
     mine.push_back(1);
-    mine.push_back(3);
-    mine.insert(mine.end(), 2);
+    mine.push_back(2);
+    ft::list<int>::iterator pos = mine.end();
+    ft::list<int>::iterator ret = mine.insert(pos, 3);
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*ret, 3);
+    EXPECT_TRUE(++pos == ret);
+    std::cout << "ret " << *ret << std::endl;
+    std::cout << "pos " << *pos << std::endl;
+    mine.print();
 }
 
 TEST_F(ListModifiersTests, count_empty_insert_into_empty_at_begin) {
-    mine.insert(mine.begin(), 0, 8);
-    EXPECT_EQ(mine.size(), 0);
-    EXPECT_EQ(mine.back(), 0);
-    EXPECT_EQ(mine.front(), 0);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.insert(pos, 0, 8);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
 }
 
 TEST_F(ListModifiersTests, count_empty_insert_into_empty_at_end) {
-    mine.insert(mine.end(), 0, 8);
-    EXPECT_EQ(mine.size(), 0);
-    EXPECT_EQ(mine.back(), 0);
-    EXPECT_EQ(mine.front(), 0);
+    ft::list<int>::iterator pos = mine.end();
+    ft::list<int>::iterator ret = mine.insert(pos, 0, 8);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
 }
 
 TEST_F(ListModifiersTests, count_empty_insert_into_filled_at_begin) {
+    ft::list<int>::iterator pos = mine.begin();
     mine.push_back(1);
     mine.push_back(2);
-    mine.insert(mine.begin(), 0, 2);
+    ft::list<int>::iterator ret = mine.insert(pos, 0, 2);
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
 }
 
 TEST_F(ListModifiersTests, count_empty_insert_into_filled_in_the_middle) {
+    ft::list<int>::iterator pos = mine.begin();
     mine.push_back(1);
     mine.push_back(2);
+    pos++;
+    ft::list<int>::iterator ret = mine.insert(pos, 0, 2);
     ft::list<int>::iterator it = mine.begin();
-    it++;
-    mine.insert(it, 0, 2);
-    it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
 }
 
 TEST_F(ListModifiersTests, count_empty_insert_into_filled_at_end) {
+    ft::list<int>::iterator pos = mine.end();
     mine.push_back(1);
     mine.push_back(2);
-    mine.insert(mine.end(), 0, 2);
+    ft::list<int>::iterator ret = mine.insert(pos, 0, 2);
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
 }
 
 TEST_F(ListModifiersTests, count_single_insert_into_empty_at_begin) {
-    mine.insert(mine.begin(), 1, 8);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.insert(pos, 1, 8);
     EXPECT_EQ(mine.size(), 1);
     EXPECT_EQ(mine.back(), 8);
     EXPECT_EQ(mine.front(), 8);
+    EXPECT_TRUE(ret == mine.end());
 }
 
 TEST_F(ListModifiersTests, count_single_insert_into_empty_at_end) {
-    mine.insert(mine.end(), 1, 8);
+    ft::list<int>::iterator pos = mine.end();
+    ft::list<int>::iterator ret = mine.insert(pos, 1, 8);
     EXPECT_EQ(mine.size(), 1);
     EXPECT_EQ(mine.back(), 8);
     EXPECT_EQ(mine.front(), 8);
 }
 
 TEST_F(ListModifiersTests, count_single_insert_into_filled_at_begin) {
+    ft::list<int>::iterator pos = mine.begin();
     mine.push_back(2);
     mine.push_back(3);
-    mine.insert(mine.begin(), 1, 1);
+    ft::list<int>::iterator ret = mine.insert(pos, 1, 1);
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, count_single_insert_into_filled_in_the_middle) {
+    ft::list<int>::iterator pos = mine.end();
     mine.push_back(1);
     mine.push_back(3);
+    pos++;
+    ft::list<int>::iterator ret = mine.insert(pos, 1, 2);
     ft::list<int>::iterator it = mine.begin();
-    it++;
-    mine.insert(it, 1, 2);
-    it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, count_single_insert_into_filled_at_end) {
+    ft::list<int>::iterator pos = mine.end();
     mine.push_back(1);
     mine.push_back(2);
-    mine.insert(mine.end(), 1, 3);
+    ft::list<int>::iterator ret = mine.insert(pos, 1, 3);
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, count_multiple_insert_into_empty_at_begin) {
-    mine.insert(mine.begin(), 2, 8);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.insert(pos, 2, 8);
     EXPECT_EQ(mine.size(), 2);
     EXPECT_EQ(mine.back(), 8);
     EXPECT_EQ(mine.front(), 8);
 }
 
 TEST_F(ListModifiersTests, count_multiple_insert_into_empty_at_end) {
-    mine.insert(mine.end(), 2, 8);
+    ft::list<int>::iterator pos = mine.end();
+    ft::list<int>::iterator ret = mine.insert(pos, 2, 8);
     EXPECT_EQ(mine.size(), 2);
     EXPECT_EQ(mine.back(), 8);
     EXPECT_EQ(mine.front(), 8);
 }
 
 TEST_F(ListModifiersTests, count_multiple_insert_into_filled_at_begin) {
+    ft::list<int>::iterator pos = mine.begin();
     mine.push_back(2);
     mine.push_back(3);
-    mine.insert(mine.begin(), 3, 1);
+    ft::list<int>::iterator ret = mine.insert(pos, 3, 1);
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, count_multiple_insert_into_filled_in_the_middle) {
+    ft::list<int>::iterator pos = mine.end();
     mine.push_back(1);
     mine.push_back(3);
+    pos++;
+    ft::list<int>::iterator ret = mine.insert(pos, 3, 2);
     ft::list<int>::iterator it = mine.begin();
-    it++;
-    mine.insert(it, 3, 2);
-    it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, count_multiple_insert_into_filled_at_end) {
+    ft::list<int>::iterator pos = mine.end();
     mine.push_back(1);
     mine.push_back(2);
-    mine.insert(mine.end(), 3, 3);
+    ft::list<int>::iterator ret = mine.insert(pos, 3, 3);
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
     EXPECT_EQ(*(it++), 3);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, range_single_insert_into_empty_at_begin) {
+    ft::list<int>::iterator pos = mine.begin();
     ft::list<int> other;
     other.push_back(1);
-    mine.insert(mine.begin(), other.begin(), other.end());
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.end());
     EXPECT_EQ(mine.size(), 1);
     EXPECT_EQ(mine.front(), 1);
     EXPECT_EQ(mine.back(), 1);
 }
 
 TEST_F(ListModifiersTests, range_single_insert_into_empty_at_end) {
+    ft::list<int>::iterator pos = mine.end();
     ft::list<int> other;
     other.push_back(1);
-    mine.insert(mine.end(), other.begin(), other.end());
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.end());
     EXPECT_EQ(mine.size(), 1);
     EXPECT_EQ(mine.front(), 1);
     EXPECT_EQ(mine.back(), 1);
 }
 
 TEST_F(ListModifiersTests, range_single_insert_into_filled_at_begin) {
+    ft::list<int>::iterator pos = mine.begin();
     ft::list<int> other;
     other.push_back(1);
     mine.push_back(2);
     mine.push_back(3);
-    mine.insert(mine.begin(), other.begin(), other.end());
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.end());
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, range_single_insert_into_filled_in_the_middle) {
+    ft::list<int>::iterator pos = mine.begin();
     ft::list<int> other;
     other.push_back(2);
     mine.push_back(1);
     mine.push_back(3);
+    pos++;
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.end());
     ft::list<int>::iterator it = mine.begin();
-    it++;
-    mine.insert(it, other.begin(), other.end());
-    it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, range_single_insert_into_filled_at_end) {
+    ft::list<int>::iterator pos = mine.end();
     ft::list<int> other;
     other.push_back(3);
     mine.push_back(1);
     mine.push_back(2);
-    mine.insert(mine.end(), other.begin(), other.end());
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.end());
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, range_multiple_insert_into_empty_at_begin) {
+    ft::list<int>::iterator pos = mine.begin();
     std::list<int> other;
     other.push_back(1);
     other.push_back(2);
-    mine.insert(mine.begin(), other.begin(), other.begin());
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.begin());
     EXPECT_EQ(mine.size(), 2);
     EXPECT_EQ(mine.front(), 1);
     EXPECT_EQ(mine.back(), 2);
 }
 
 TEST_F(ListModifiersTests, range_multiple_insert_into_empty_at_end) {
+    ft::list<int>::iterator pos = mine.end();
     std::list<int> other;
     other.push_back(1);
     other.push_back(2);
-    mine.insert(mine.end(), other.begin(), other.begin());
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.begin());
     EXPECT_EQ(mine.size(), 2);
     EXPECT_EQ(mine.front(), 1);
     EXPECT_EQ(mine.back(), 2);
 }
 
 TEST_F(ListModifiersTests, range_multiple_insert_into_filled_at_begin) {
+    ft::list<int>::iterator pos = mine.begin();
     ft::list<int> other;
     other.push_back(1);
     other.push_back(1);
     other.push_back(1);
     mine.push_back(2);
     mine.push_back(3);
-    mine.insert(mine.begin(), other.begin(), other.end());
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.end());
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, range_multiple_insert_into_filled_in_the_middle) {
+    ft::list<int>::iterator pos = mine.begin();
     ft::list<int> other;
     other.push_back(2);
     other.push_back(2);
     other.push_back(2);
     mine.push_back(1);
     mine.push_back(3);
+    pos++;
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.end());
     ft::list<int>::iterator it = mine.begin();
-    it++;
-    mine.insert(it, other.begin(), other.end());
-    it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 TEST_F(ListModifiersTests, range_multiple_insert_into_filled_at_end) {
+    ft::list<int>::iterator pos = mine.end();
     ft::list<int> other;
     other.push_back(3);
     other.push_back(3);
     other.push_back(3);
     mine.push_back(1);
     mine.push_back(2);
-    mine.insert(mine.end(), other.begin(), other.end());
+    ft::list<int>::iterator ret = mine.insert(pos, other.begin(), other.end());
     ft::list<int>::iterator it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
     EXPECT_EQ(*(it++), 3);
     EXPECT_EQ(*(it++), 3);
     EXPECT_EQ(*(it++), 3);
-    EXPECT_EQ(it, mine.end());
+    EXPECT_TRUE(it == mine.end());
 }
 
 // // erase
