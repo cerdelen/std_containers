@@ -148,14 +148,15 @@ TEST_F(ListIteratorTests, begin_iterator_decremented_on_size_one_list) {
     EXPECT_EQ(*my_it, *orig_it);
 }
 
-TEST_F(ListIteratorTests, begin_iterator_decremented_to_one_before_begin_on_filled) {
-    push_back(3);
-    ft::list<int>::iterator     my_it = mine.begin();
-    std::list<int>::iterator    orig_it = orig.begin();
-
-    decrement_iterator(my_it, orig_it);
-    EXPECT_EQ(*my_it, *orig_it);
-}
+// weird behaviour on original list iterator ... it gives back 1 which is not and has never been pushed to this one
+// TEST_F(ListIteratorTests, begin_iterator_decremented_to_one_before_begin_on_filled) {
+//     push_back(3);
+//     ft::list<int>::iterator     my_it = mine.begin();
+//     std::list<int>::iterator    orig_it = orig.begin();
+//
+//     decrement_iterator(my_it, orig_it);
+//     EXPECT_EQ(*my_it, *orig_it);
+// }
 
 TEST_F(ListIteratorTests, begin_iterator_looping_decremented_to_before_begin_on_filled) {
     push_back(3);
@@ -166,14 +167,20 @@ TEST_F(ListIteratorTests, begin_iterator_looping_decremented_to_before_begin_on_
     EXPECT_EQ(*my_it, *orig_it);
 }
 
-TEST_F(ListIteratorTests, begin_iterator_looped_decremented_to_one_before_begin_on_filled_list) {
-    init_fill(3);
-    ft::list<int>::iterator     my_it = mine.begin();
-    std::list<int>::iterator    orig_it = orig.begin();
-
-    decrement_iterator(my_it, orig_it, 5);
-    EXPECT_EQ(*my_it, *orig_it);
-}
+// weird original list implementation returns 3 on a list of [ 0, 1, 2]
+// TEST_F(ListIteratorTests, begin_iterator_looped_decremented_to_one_before_begin_on_filled_list) {
+//     init_fill(3);
+//     ft::list<int>::iterator     my_it = mine.begin();
+//     std::list<int>::iterator    orig_it = orig.begin();
+//
+//     decrement_iterator(my_it, orig_it, 5);
+//     EXPECT_EQ(*my_it, *orig_it);
+//     mine.print();
+//     for (auto i  : orig) {
+//         std::cout << i << std::endl;
+//
+//     }
+// }
 
 TEST_F(ListIteratorTests, begin_to_end_incrementing_on_filled_list) {
     init_fill(5);
