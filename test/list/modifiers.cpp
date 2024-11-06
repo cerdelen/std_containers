@@ -543,6 +543,227 @@ TEST_F(ListModifiersTests, range_multiple_insert_into_filled_at_end) {
 }
 
 // // erase
+// empty does not work as it segfaults on real implementation
+//      why does it fail, well prerequisite is input iteratores are dereferencable
+//      otherwhise it would be linear to size of list operation instead of constant (or linear to size of to be deleted)
+// 1 single erase
+//  filled
+//      begin
+TEST_F(ListModifiersTests, erase_single_at_begin) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.erase(pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*ret, 2);
+}
+//      middle
+TEST_F(ListModifiersTests, erase_single_in_middle) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    ft::list<int>::iterator ret = mine.erase(pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*ret, 3);
+}
+//      end
+TEST_F(ListModifiersTests, erase_single_at_end) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    pos++;
+    ft::list<int>::iterator ret = mine.erase(pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == mine.end());
+}
+//          one that erases whole
+TEST_F(ListModifiersTests, erase_single_on_size_one_list) {
+    mine.push_back(1);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.erase(pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == mine.end());
+}
+//
+// 2 range erase
+//  filled
+//      empty erase range
+TEST_F(ListModifiersTests, erase_range_empty_on_empty_list) {
+    ft::list<int>::iterator ret = mine.erase(mine.begin(), mine.end());
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == mine.end());
+}
+//          begin to begin
+TEST_F(ListModifiersTests, erase_range_empty_on_filled_list_begin_to_begin) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.erase(pos, pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+//          middle to middle
+TEST_F(ListModifiersTests, erase_range_empty_on_filled_list_middle_to_middle) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    ft::list<int>::iterator ret = mine.erase(pos, pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+//          end to end
+TEST_F(ListModifiersTests, erase_range_empty_on_filled_list_end_to_end) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    pos++;
+    ft::list<int>::iterator ret = mine.erase(pos, pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+//      single erase range
+//          at begin
+TEST_F(ListModifiersTests, erase_range_single_on_filled_list_at_begin) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.erase(pos, ++pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+//          in middle
+TEST_F(ListModifiersTests, erase_range_single_on_filled_list_in_the_middle) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    ft::list<int>::iterator ret = mine.erase(pos, ++pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+//          at end
+TEST_F(ListModifiersTests, erase_range_single_on_filled_list_at_the_end) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    pos++;
+    ft::list<int>::iterator ret = mine.erase(pos, ++pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+//          one that erases whole
+TEST_F(ListModifiersTests, erase_range_single_that_erases_whole_list) {
+    mine.push_back(1);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.erase(pos, ++pos);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+//      range erase
+//          at begin to middle
+TEST_F(ListModifiersTests, erase_range_multiple_on_filled_list_begin_to_middle) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.erase(pos, ++(++pos));
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+//          in middle to middle
+TEST_F(ListModifiersTests, erase_range_multiple_on_filled_list_middle_to_middle) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    ft::list<int>::iterator ret = mine.erase(pos, ++(++pos));
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == pos);
+}
+TEST_F(ListModifiersTests, erase_range_multiple_on_filled_list_middle_to_end) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    ft::list<int>::iterator pos = mine.begin();
+    pos++;
+    pos++;
+    ft::list<int>::iterator ret = mine.erase(pos, mine.end());
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == mine.end());
+}
+TEST_F(ListModifiersTests, erase_range_multiple_that_erases_whole_list) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    ft::list<int>::iterator pos = mine.begin();
+    ft::list<int>::iterator ret = mine.erase(pos, mine.end());
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(ret == mine.end());
+}
+//          in middle to end
+//
 // TEST_F(ListModifiersTests, Name) {
 // }
 //

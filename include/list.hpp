@@ -89,8 +89,17 @@ namespace ft {
             //     2) Linear in distance between first and last
             // Exceptions:
             //     No Exceptions
-            iterator erase( iterator pos ) noexcept { return this->begin();};
-            iterator erase( iterator first, iterator last ) noexcept{ return this->begin();};
+            iterator erase( iterator pos ) noexcept {
+                iterator out = pos._ptr->next;
+                __remove(pos._ptr, true);
+                return out;
+            };
+            iterator erase( iterator first, iterator last ) noexcept{
+                while(first != last) {
+                    this->erase(first)++;
+                }
+                return first;
+            };
 
             // Parameters:
             //     pos          -	iterator before which the content will be inserted (pos may be the end() iterator)
@@ -126,7 +135,7 @@ namespace ft {
             // second parameter is to ensure that if the second template is indeed size_type the correct insert gets caleld and not this one
             template< class InputIt , typename = typename std::enable_if<!std::is_integral<InputIt>::value>::type>
             iterator insert( const_iterator pos, InputIt first, InputIt last ) {
-                std::cout << "range insert called" << std::endl;
+                // std::cout << "range insert called" << std::endl;
                 if (first == last) {
                     return iterator((Node*)pos._ptr);
                 }
@@ -135,7 +144,6 @@ namespace ft {
                     __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *get_node(*first));
                 }
                 return ++out;
-                // return this->begin();
             };
 
             void clear() {
