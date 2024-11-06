@@ -96,7 +96,7 @@ namespace ft {
             };
             iterator erase( iterator first, iterator last ) noexcept{
                 while(first != last) {
-                    this->erase(first)++;
+                    this->erase(first++);
                 }
                 return first;
             };
