@@ -251,10 +251,18 @@ namespace ft {
             }
 
             void swap( list& other ) {
+                __swap(&this->_base, &other._base);
+                if (this->_size == 0) {
+                    other._base.next = &other._base;
+                    other._base.prev = &other._base;
+                }
+                if (other._size == 0) {
+                    this->_base.next = &this->_base;
+                    this->_base.prev = &this->_base;
+                }
                 size_type temp = this->_size;
                 this->_size = other._size;
                 other._size = temp;
-                __swap(&this->_base, &other._base);
             };
 
 
@@ -288,19 +296,20 @@ namespace ft {
             allocator_type _alloc;
 
             void __swap(Node* first, Node* second) {
-                Node* temp_next = first->prev->next;
-                Node* temp_prev = first->next->prev;
-                first->prev->next = second->prev->next;
-                first->next->prev = second->next->prev;
-                second->prev->next = temp_next;
-                second->next->prev = temp_prev;
+                Node* first_next = first->next;
+                Node* first_prev = first->prev;
+                Node* second_next = second->next;
+                Node* second_prev = second->prev;
 
-                temp_next = first->next;
-                temp_prev = first->prev;
-                first->next = second->next;
-                first->prev = second->prev;
-                second->next = temp_next;
-                second->prev = temp_prev;
+                first_prev->next = second;
+                first_next->prev = second;
+                second_prev->next = first;
+                second_next->prev = first;
+
+                first->next = second_next;
+                first->prev = second_prev;
+                second->next = first_next;
+                second->prev = first_prev;
             };
 
             // helper functions

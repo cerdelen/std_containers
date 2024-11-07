@@ -837,7 +837,64 @@ TEST_F(ListModifiersTests, swap_size_correctness) {
     EXPECT_EQ(other.size(), 3);
 }
 
-TEST_F(ListModifiersTests, swap_contents_are_correct) {
+TEST_F(ListModifiersTests, swap_empty_to_empty) {
+    ft::list<int> other;
+    mine.swap(other);
+
+    EXPECT_TRUE(mine.begin() == mine.end());
+    EXPECT_TRUE(other.begin() == other.end());
+    EXPECT_EQ(mine.size(), 0);
+    EXPECT_EQ(other.size(), 0);
+}
+
+TEST_F(ListModifiersTests, swap_one_empty_one_filled_backwards) {
+    ft::list<int> other;
+    other.push_back(4);
+    other.push_back(5);
+    other.push_back(6);
+    other.push_back(7);
+
+    mine.print();
+    other.print();
+    mine.swap(other);
+
+    ft::list<int>::const_iterator it = mine.end();
+    ft::list<int>::const_iterator other_it = other.end();
+    mine.print();
+    other.print();
+    EXPECT_EQ(*(--it), 7);
+    EXPECT_EQ(*(--it), 6);
+    EXPECT_EQ(*(--it), 5);
+    EXPECT_EQ(*(--it), 4);
+    EXPECT_TRUE(it == mine.begin());
+    EXPECT_TRUE(other_it == other.end());
+    other_it++;
+    EXPECT_TRUE(other_it == other.end());
+}
+
+TEST_F(ListModifiersTests, swap_one_empty_one_filled) {
+    ft::list<int> other;
+    other.push_back(4);
+    other.push_back(5);
+    other.push_back(6);
+    other.push_back(7);
+
+    mine.print();
+    other.print();
+    mine.swap(other);
+
+    ft::list<int>::const_iterator it = mine.begin();
+    mine.print();
+    other.print();
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 6);
+    EXPECT_EQ(*(it++), 7);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_TRUE(other.begin() == other.end());
+}
+
+TEST_F(ListModifiersTests, swap_contents_are_correct_forward_iterator) {
     ft::list<int> other;
     mine.push_back(1);
     mine.push_back(2);
@@ -859,6 +916,30 @@ TEST_F(ListModifiersTests, swap_contents_are_correct) {
     EXPECT_EQ(*(other_it++), 2);
     EXPECT_EQ(*(other_it++), 3);
     EXPECT_TRUE(other_it == other.end());
+}
+
+TEST_F(ListModifiersTests, swap_contents_are_correct_backwards_iterator) {
+    ft::list<int> other;
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    other.push_back(4);
+    other.push_back(5);
+    other.push_back(6);
+    other.push_back(7);
+    mine.swap(other);
+
+    ft::list<int>::const_iterator it = mine.end();
+    ft::list<int>::const_iterator other_it = other.end();
+    EXPECT_EQ(*(--it), 7);
+    EXPECT_EQ(*(--it), 6);
+    EXPECT_EQ(*(--it), 5);
+    EXPECT_EQ(*(--it), 4);
+    EXPECT_TRUE(it == mine.begin());
+    EXPECT_EQ(*(--other_it), 3);
+    EXPECT_EQ(*(--other_it), 2);
+    EXPECT_EQ(*(--other_it), 1);
+    EXPECT_TRUE(other_it == other.begin());
 }
 
 TEST_F(ListModifiersTests, swap_iterator_remain_valid) {
