@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <utility>
 #include "list_iterator.hpp"
 
 // template<typename T, typename Alloc = std::allocator<T> >
@@ -29,7 +30,6 @@ namespace ft {
             list() {
                 this->_base.next = &(this->_base);
                 this->_base.prev = &(this->_base);
-                this->_base.val = T{};
             };
             list(const list& other) {
                 this->_base.next = &(this->_base);
@@ -41,12 +41,11 @@ namespace ft {
                     return *this;
                 this->clear();
                 if (other._size == 0) {
-                    this->_base.val = T{};
                     return *this;
                 }
                 Node* ptr = other._base.prev;
                 while (ptr != &other._base) {
-                    this->push_front(ptr->val);
+                    this->push_front(*ptr->val);
                     ptr = ptr->prev;
                 }
                 return *this;
@@ -61,7 +60,6 @@ namespace ft {
                     return *this;
                 this->clear();
                 if (other._size == 0) {
-                    this->_base.val = T{};
                     return *this;
                 }
                 Node* ptr = other._base.prev;
@@ -235,8 +233,13 @@ namespace ft {
             //     If value-initialization in overload (1) is undesirable, for example, if the elements are of non-class type and zeroing out
             //     is not needed, it can be avoided by providing a custom Allocator::construct.
             void resize( size_type count ) {
-                value_type val{};
-                resize(count, val);
+                while (count > _size) {
+                    __insert(*this->_base.prev, this->_base, *get_node());
+                }
+                while (count < _size) {
+                    this->pop_back();
+                }
+                // resize(count, val);
             }
             void resize( size_type count, const value_type& value ) {
                 while (count > _size) {
@@ -246,6 +249,13 @@ namespace ft {
                     this->pop_back();
                 }
             }
+
+            void swap( list& other ) {
+                size_type temp = this->_size;
+                this->_size = other._size;
+                other._size = temp;
+                __swap(&this->_base, &other._base);
+            };
 
 
 
@@ -260,9 +270,9 @@ namespace ft {
 
         private:
             struct Node {
-                Node* next;
-                Node* prev;
-                T      val;
+                Node*   next;
+                Node*   prev;
+                T*      val = NULL;
                 typedef T value_type;
                 // this would be good coding praxis but in praxis except for constructor of lsit itself
                 // this would only unnecessarily set next and prev 2 times
@@ -277,6 +287,22 @@ namespace ft {
             std::allocator<Node> node_alloc;
             allocator_type _alloc;
 
+            void __swap(Node* first, Node* second) {
+                Node* temp_next = first->prev->next;
+                Node* temp_prev = first->next->prev;
+                first->prev->next = second->prev->next;
+                first->next->prev = second->next->prev;
+                second->prev->next = temp_next;
+                second->next->prev = temp_prev;
+
+                temp_next = first->next;
+                temp_prev = first->prev;
+                first->next = second->next;
+                first->prev = second->prev;
+                second->next = temp_next;
+                second->prev = temp_prev;
+            };
+
             // helper functions
             void __insert(Node& prev, Node& next, Node& _new_node) {
                 _new_node.next = &next;
@@ -285,8 +311,8 @@ namespace ft {
                 next.prev = &_new_node;
                 prev.next = &_new_node;
                 this->_size++;
-                if (_new_node.next == &this->_base)
-                    this->_base.val = _new_node.val;
+                // if (_new_node.next == &this->_base)
+                    // this->_base.val = _new_node.val;
             };
 
             void __remove(Node* node, bool linking) noexcept {
@@ -294,18 +320,28 @@ namespace ft {
                 if (linking) {
                     node->next->prev = node->prev;
                     node->prev->next = node->next;
-                    if (_size == 0)
-                        this->_base.val = value_type();
-                    else if (node->next == &this->_base)
-                        this->_base.val = this->_base.prev->val;
+                    // if (_size == 0)
+                    //     this->_base.val = value_type();
+                    // else if (node->next == &this->_base)
+                    //     this->_base.val = this->_base.prev->val;
                 }
                 node_alloc.deallocate(node, 1);
             };
 
             Node* get_node(const T& val) {
                 Node* out = node_alloc.allocate(1);
+                pointer ptr = _alloc.allocate(1);
 
-                out->val = val;
+                *ptr = val;
+
+                out->val = ptr;
+                return out;
+            };
+            Node* get_node() {
+                Node* out = node_alloc.allocate(1);
+                pointer ptr = _alloc.allocate(1);
+
+                out->val = ptr;
                 return out;
             };
     };

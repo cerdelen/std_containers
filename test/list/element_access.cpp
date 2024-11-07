@@ -2,10 +2,6 @@
 
 class ListElementAccessTests : public ListTestBaseFixture { };
 
-TEST_F(ListElementAccessTests, single_front_after_init) {
-    EXPECT_EQ(mine.front(), orig.front());
-}
-
 TEST_F(ListElementAccessTests, single_front_after_single_push_front) {
     push_front(123);
     EXPECT_EQ(mine.front(), orig.front());
@@ -32,10 +28,6 @@ TEST_F(ListElementAccessTests, single_front_after_multiple_mixed_push) {
     push_back(123);
     push_front(124);
     EXPECT_EQ(mine.front(), orig.front());
-}
-
-TEST_F(ListElementAccessTests, single_back_after_init) {
-    EXPECT_EQ(mine.back(), orig.back());
 }
 
 TEST_F(ListElementAccessTests, single_back_after_single_push_front) {

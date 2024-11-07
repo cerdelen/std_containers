@@ -34,7 +34,7 @@ namespace ft {
 			}
 
 			value_ref			operator*( void ) const {
-				return (_ptr->val);
+				return (*_ptr->val);
 			}
 
 			value_ptr			operator->( void ) const {
@@ -127,7 +127,7 @@ namespace ft {
 			}
 
 			value_ref			operator*( void ) const {
-				return (_ptr->val);
+				return (*_ptr->val);
 			}
 
 			value_ptr			operator->( void ) const {
