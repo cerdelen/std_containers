@@ -239,7 +239,6 @@ namespace ft {
                 while (count < _size) {
                     this->pop_back();
                 }
-                // resize(count, val);
             }
             void resize( size_type count, const value_type& value ) {
                 while (count > _size) {
@@ -265,6 +264,28 @@ namespace ft {
                 other._size = temp;
             };
 
+            void merge(list &other ) {
+                iterator it_other = other.begin();
+                iterator it_this = this->begin();
+                while(it_other != other.end()) {
+                    while (it_this != this->end() && !(*it_other < *it_this))
+                        it_this++;
+                    __insert(*(Node*)it_this._ptr->prev, *(Node*)it_this._ptr, *(Node*)it_other++._ptr);
+                }
+                other.reinit();
+            }
+
+            template< class Compare >
+            void merge(list &other, Compare comp) {
+                iterator it_other = other.begin();
+                iterator it_this = this->begin();
+                while(it_other != other.end()) {
+                    while (it_this != this->end() && !(comp(*it_other, *it_this)))
+                        it_this++;
+                    __insert(*(Node*)it_this._ptr->prev, *(Node*)it_this._ptr, *(Node*)it_other++._ptr);
+                }
+                other.reinit();
+            }
 
 
             void print(){
@@ -334,6 +355,7 @@ namespace ft {
                     // else if (node->next == &this->_base)
                     //     this->_base.val = this->_base.prev->val;
                 }
+                _alloc.deallocate(node->val, 1);
                 node_alloc.deallocate(node, 1);
             };
 
@@ -346,12 +368,19 @@ namespace ft {
                 out->val = ptr;
                 return out;
             };
+
             Node* get_node() {
                 Node* out = node_alloc.allocate(1);
                 pointer ptr = _alloc.allocate(1);
 
                 out->val = ptr;
                 return out;
+            };
+
+            void reinit() {
+                this->_base.next = &this->_base;
+                this->_base.prev = &this->_base;
+                this->_size = 0;
             };
     };
 }
