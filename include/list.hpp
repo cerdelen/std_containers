@@ -287,6 +287,27 @@ namespace ft {
                 other.reinit();
             }
 
+            void splice( iterator pos, list &other) {
+                iterator it_other = other.begin();
+                while(it_other != other.end()) {
+                    __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *(Node*)it_other++._ptr);
+                }
+                other.reinit();
+            }
+
+            void splice( iterator pos, list &other, const_iterator it ) {
+                while(it != other.end()) {
+                    __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *(Node*)it++._ptr);
+                }
+                other.reinit();
+            }
+
+            void splice( iterator pos, list &other, const_iterator first, const_iterator last ) {
+                while(first != last) {
+                    __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *(Node*)first++._ptr);
+                }
+                other.reinit();
+            }
 
             void print(){
                 std::cout << "[ ";
