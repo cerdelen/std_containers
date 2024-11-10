@@ -325,6 +325,33 @@ namespace ft {
                 _base.prev = temp;
             }
 
+            void unique() {
+                iterator it = this->begin();
+                iterator temp = it++;
+                while (it != this->end()) {
+                    if (*it == *temp) {
+                        __remove((it++)._ptr, true);
+                    }
+                    else {
+                        temp = it++;
+                    }
+                }
+            }
+
+            template< class BinaryPredicate >
+            void unique( BinaryPredicate p ) {
+                iterator it = this->begin();
+                iterator temp = it++;
+                while (it != this->end()) {
+                    if (p(*it, *temp)) {
+                        __remove((it++)._ptr, true);
+                    }
+                    else {
+                        temp = it++;
+                    }
+                }
+            }
+
             void print(){
                 std::cout << "[ ";
                 for(iterator it = this->begin(); it != this->end(); it++){

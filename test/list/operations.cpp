@@ -719,6 +719,111 @@ TEST_F(ListOperationsTests, reverse_on_empty) {
 //
 //
 // unique
+TEST_F(ListOperationsTests, unique) {
+    mine.push_back(1);
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(2);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(2);
+    mine.push_back(5);
+    mine.push_back(4);
+
+    mine.unique();
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, unique_iterator_stays_valid) {
+    mine.push_back(1);
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(2);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(2);
+    mine.push_back(5);
+    mine.push_back(4);
+
+    ft::list<int>::iterator it = mine.begin();
+    mine.unique();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+}
+
+bool comp(int first, int second) {return first == second;}
+TEST_F(ListOperationsTests, unique_with_compare_function) {
+    mine.push_back(1);
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(2);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(2);
+    mine.push_back(5);
+    mine.push_back(4);
+
+    mine.unique(comp);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, unique_with_compare_funciton_iterator_stays_valid) {
+    mine.push_back(1);
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(2);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(2);
+    mine.push_back(5);
+    mine.push_back(4);
+
+    ft::list<int>::iterator it = mine.begin();
+    mine.unique(comp);
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+}
+
 //
 //
 // sort
