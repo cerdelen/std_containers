@@ -309,6 +309,22 @@ namespace ft {
                 other.reinit();
             }
 
+            void reverse() noexcept {
+                if (_size == 0)
+                    return;
+                iterator it = this->begin();
+                Node* temp;
+                while(it != this->end()) {
+                    temp = it._ptr->next;
+                    it._ptr->next = it._ptr->prev;
+                    it._ptr->prev = temp;
+                    it--;
+                }
+                temp = _base.next;
+                _base.next = _base.prev;
+                _base.prev = temp;
+            }
+
             void print(){
                 std::cout << "[ ";
                 for(iterator it = this->begin(); it != this->end(); it++){

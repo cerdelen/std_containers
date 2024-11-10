@@ -669,6 +669,53 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_with_both_empty) {
 //
 //
 // reverse
+
+TEST_F(ListOperationsTests, reverse) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(5);
+
+    mine.reverse();
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, reverse_iterator_stay_valid) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(5);
+
+    ft::list<int>::iterator it = mine.begin();
+    it++;
+    it++;
+    mine.reverse();
+    ft::list<int>::iterator it2 = it;
+    EXPECT_EQ(*(it2--), 3);
+    EXPECT_EQ(*(it2--), 4);
+    EXPECT_EQ(*(it2--), 5);
+
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, reverse_on_empty) {
+    mine.reverse();
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+}
+
+
 //
 //
 // unique
