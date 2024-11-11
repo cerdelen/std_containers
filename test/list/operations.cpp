@@ -201,6 +201,30 @@ TEST_F(ListOperationsTests, splice) {
     EXPECT_TRUE(it == mine.end());
 }
 
+TEST_F(ListOperationsTests, splice_reverse_iterating_valid) {
+    mine.push_back(1);
+    mine.push_back(2);
+
+    ft::list<int> other;
+    other.push_back(3);
+    other.push_back(4);
+
+    ft::list<int>::iterator it = mine.end();
+    mine.splice(it, other);
+    EXPECT_EQ(mine.size(), 4);
+    EXPECT_EQ(other.size(), 0);
+    EXPECT_EQ(other.begin(), other.end());
+    it = mine.end();
+    EXPECT_EQ(*(--it), 4);
+    EXPECT_EQ(*(--it), 3);
+    EXPECT_EQ(*(--it), 2);
+    EXPECT_EQ(*(--it), 1);
+    EXPECT_TRUE(it == mine.begin());
+    ft::list<int>::iterator other_it = other.end();
+    other_it--;
+    EXPECT_TRUE(other_it == other.end());
+}
+
 TEST_F(ListOperationsTests, splice_iterator_stays_validated) {
     mine.push_back(2);
     mine.push_back(4);
@@ -366,6 +390,33 @@ TEST_F(ListOperationsTests, splice_with_other_it) {
     EXPECT_EQ(*(other_it++), 2);
     EXPECT_TRUE(other_it == other.end());
 }
+
+TEST_F(ListOperationsTests, splice_with_other_it_reverse_iterating_valid) {
+    mine.push_back(1);
+    mine.push_back(2);
+
+    ft::list<int> other;
+    other.push_back(4);
+    other.push_back(3);
+
+    ft::list<int>::iterator it = mine.begin();
+    it++;
+    ft::list<int>::iterator other_it = other.begin();
+    other_it++;
+    mine.splice(it, other, other_it);
+    EXPECT_EQ(mine.size(), 3);
+    EXPECT_EQ(other.size(), 1);
+    it = mine.end();
+    EXPECT_EQ(*(--it), 2);
+    EXPECT_EQ(*(--it), 3);
+    EXPECT_EQ(*(--it), 1);
+    EXPECT_TRUE(it == mine.begin());
+    other_it = other.end();
+    EXPECT_EQ(*(--other_it), 4);
+    other_it--;
+    EXPECT_TRUE(other_it == other.end());
+}
+
 
 TEST_F(ListOperationsTests, splice_with_other_it_iterator_stays_validated) {
     mine.push_back(2);
@@ -755,6 +806,40 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_at_begin_rest_remains) 
     EXPECT_TRUE(other_it == other.end());
 }
 
+TEST_F(ListOperationsTests, splice_with_first_to_last_it_reverse_iterating_valid) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+
+    ft::list<int> other;
+    other.push_back(5);
+    other.push_back(6);
+    other.push_back(7);
+    other.push_back(8);
+    other.push_back(9);
+
+    ft::list<int>::iterator it = mine.begin();
+    ft::list<int>::iterator other_it = other.begin();
+    other_it++;
+    mine.splice(it, other, other_it, --(other.end()));
+    it = mine.end();
+    other_it = other.end();
+    EXPECT_EQ(mine.size(), 7);
+    EXPECT_EQ(other.size(), 2);
+    EXPECT_EQ(*(--it), 4);
+    EXPECT_EQ(*(--it), 3);
+    EXPECT_EQ(*(--it), 2);
+    EXPECT_EQ(*(--it), 1);
+    EXPECT_EQ(*(--it), 8);
+    EXPECT_EQ(*(--it), 7);
+    EXPECT_EQ(*(--it), 6);
+    it--;
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*(--other_it), 9);
+    EXPECT_EQ(*(--other_it), 5);
+    EXPECT_TRUE(other_it == other.begin());
+}
 
 //
 //
