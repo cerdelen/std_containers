@@ -295,18 +295,30 @@ namespace ft {
                 other.reinit();
             }
 
-            void splice( iterator pos, list &other, const_iterator it ) {
+            void splice( iterator pos, list &other, iterator it ) {
+                iterator before = it;
+                before--;
+                size_type i = 0;
                 while(it != other.end()) {
                     __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *(Node*)it++._ptr);
+                    i++;
                 }
-                other.reinit();
+                before._ptr->next = (Node*)&other._base;
+                other._base.prev = (Node*)before._ptr;
+                other._size -= i;
             }
 
-            void splice( iterator pos, list &other, const_iterator first, const_iterator last ) {
+            void splice( iterator pos, list &other, iterator first, iterator last ) {
+                iterator before = first;
+                before--;
+                size_type i = 0;
                 while(first != last) {
                     __insert(*(Node*)pos._ptr->prev, *(Node*)pos._ptr, *(Node*)first++._ptr);
+                    i++;
                 }
-                other.reinit();
+                before._ptr->next = (Node*)last._ptr;
+                last._ptr->prev = before._ptr;
+                other._size -= i;
             }
 
             void reverse() noexcept {

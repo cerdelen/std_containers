@@ -351,8 +351,7 @@ TEST_F(ListOperationsTests, splice_with_other_it) {
     other_it++;
     mine.splice(it, other, other_it);
     EXPECT_EQ(mine.size(), 8);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 1);
     it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 3);
@@ -363,6 +362,9 @@ TEST_F(ListOperationsTests, splice_with_other_it) {
     EXPECT_EQ(*(it++), 5);
     EXPECT_EQ(*(it++), 8);
     EXPECT_TRUE(it == mine.end());
+    other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 2);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_other_it_iterator_stays_validated) {
@@ -385,8 +387,7 @@ TEST_F(ListOperationsTests, splice_with_other_it_iterator_stays_validated) {
     other_it++;
     mine.splice(it, other, other_it);
     EXPECT_EQ(mine.size(), 8);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 1);
     EXPECT_EQ(*(it++), 5);
     EXPECT_EQ(*(it--), 8);
     EXPECT_EQ(*(it--), 5);
@@ -398,6 +399,9 @@ TEST_F(ListOperationsTests, splice_with_other_it_iterator_stays_validated) {
     EXPECT_EQ(*(it--), 2);
     it++;
     EXPECT_TRUE(it == mine.begin());
+    other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 1);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_other_it_at_end) {
@@ -417,9 +421,9 @@ TEST_F(ListOperationsTests, splice_with_other_it_at_end) {
     ft::list<int>::iterator other_it = other.begin();
     other_it++;
     mine.splice(it, other, other_it);
+    other_it = other.begin();
     EXPECT_EQ(mine.size(), 8);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 1);
     it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
@@ -430,6 +434,8 @@ TEST_F(ListOperationsTests, splice_with_other_it_at_end) {
     EXPECT_EQ(*(it++), 8);
     EXPECT_EQ(*(it++), 9);
     EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*(other_it++), 5);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_other_it_at_begin) {
@@ -450,9 +456,9 @@ TEST_F(ListOperationsTests, splice_with_other_it_at_begin) {
     other_it++;
     mine.splice(it, other, other_it);
     it = mine.begin();
+    other_it = other.begin();
     EXPECT_EQ(mine.size(), 8);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 1);
     EXPECT_EQ(*(it++), 6);
     EXPECT_EQ(*(it++), 7);
     EXPECT_EQ(*(it++), 8);
@@ -462,6 +468,8 @@ TEST_F(ListOperationsTests, splice_with_other_it_at_begin) {
     EXPECT_EQ(*(it++), 3);
     EXPECT_EQ(*(it++), 4);
     EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*(other_it++), 5);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_other_it_with_one_empty) {
@@ -476,15 +484,18 @@ TEST_F(ListOperationsTests, splice_with_other_it_with_one_empty) {
     ft::list<int>::iterator other_it = other.begin();
     other_it++;
     mine.splice(it, other, other_it);
+    other_it = other.begin();
     it = mine.begin();
     EXPECT_EQ(*(it++), 4);
     EXPECT_EQ(*(it++), 10);
     EXPECT_EQ(*(it++), 11);
     EXPECT_EQ(*(it++), 15);
     EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*(other_it++), 1);
+    EXPECT_TRUE(other_it == other.end());
     EXPECT_EQ(mine.size(), 4);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 1);
+    // EXPECT_EQ(other.begin(), other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_other_it_with_both_empty) {
@@ -497,6 +508,40 @@ TEST_F(ListOperationsTests, splice_with_other_it_with_both_empty) {
     EXPECT_TRUE(it == mine.end());
     EXPECT_EQ(mine.size(), 0);
     EXPECT_EQ(other.size(), 0);
+}
+
+TEST_F(ListOperationsTests, splice_with_other_it_rest_remains) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+
+    ft::list<int> other;
+    other.push_back(5);
+    other.push_back(6);
+    other.push_back(7);
+    other.push_back(8);
+    other.push_back(9);
+
+    ft::list<int>::iterator it = mine.begin();
+    ft::list<int>::iterator other_it = other.begin();
+    other_it++;
+    mine.splice(it, other, other_it);
+    it = mine.begin();
+    other_it = other.begin();
+    EXPECT_EQ(mine.size(), 8);
+    EXPECT_EQ(other.size(), 1);
+    EXPECT_EQ(*(it++), 6);
+    EXPECT_EQ(*(it++), 7);
+    EXPECT_EQ(*(it++), 8);
+    EXPECT_EQ(*(it++), 9);
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*(other_it++), 5);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_first_to_last_it) {
@@ -518,8 +563,7 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it) {
     other_it++;
     mine.splice(it, other, other_it, --(other.end()));
     EXPECT_EQ(mine.size(), 7);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 2);
     it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 3);
@@ -529,6 +573,10 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it) {
     EXPECT_EQ(*(it++), 5);
     EXPECT_EQ(*(it++), 8);
     EXPECT_TRUE(it == mine.end());
+    other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 2);
+    EXPECT_EQ(*(other_it++), 9);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_first_to_last_it_iterator_stays_validated) {
@@ -551,8 +599,7 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_iterator_stays_validate
     other_it++;
     mine.splice(it, other, other_it, --(other.end()));
     EXPECT_EQ(mine.size(), 7);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 2);
     EXPECT_EQ(*(it++), 5);
     EXPECT_EQ(*(it--), 8);
     EXPECT_EQ(*(it--), 5);
@@ -563,6 +610,10 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_iterator_stays_validate
     EXPECT_EQ(*(it--), 2);
     it++;
     EXPECT_TRUE(it == mine.begin());
+    other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 1);
+    EXPECT_EQ(*(other_it++), 9);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_first_to_last_it_at_end) {
@@ -583,8 +634,7 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_at_end) {
     other_it++;
     mine.splice(it, other, other_it, --(other.end()));
     EXPECT_EQ(mine.size(), 7);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 2);
     it = mine.begin();
     EXPECT_EQ(*(it++), 1);
     EXPECT_EQ(*(it++), 2);
@@ -594,6 +644,10 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_at_end) {
     EXPECT_EQ(*(it++), 7);
     EXPECT_EQ(*(it++), 8);
     EXPECT_TRUE(it == mine.end());
+    other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 5);
+    EXPECT_EQ(*(other_it++), 9);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_first_to_last_it_at_begin) {
@@ -615,8 +669,7 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_at_begin) {
     mine.splice(it, other, other_it, --(other.end()));
     it = mine.begin();
     EXPECT_EQ(mine.size(), 7);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 2);
     EXPECT_EQ(*(it++), 6);
     EXPECT_EQ(*(it++), 7);
     EXPECT_EQ(*(it++), 8);
@@ -625,6 +678,10 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_at_begin) {
     EXPECT_EQ(*(it++), 3);
     EXPECT_EQ(*(it++), 4);
     EXPECT_TRUE(it == mine.end());
+    other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 5);
+    EXPECT_EQ(*(other_it++), 9);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_first_to_last_it_with_one_empty) {
@@ -645,8 +702,11 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_with_one_empty) {
     EXPECT_EQ(*(it++), 11);
     EXPECT_TRUE(it == mine.end());
     EXPECT_EQ(mine.size(), 3);
-    EXPECT_EQ(other.size(), 0);
-    EXPECT_EQ(other.begin(), other.end());
+    EXPECT_EQ(other.size(), 2);
+    other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 1);
+    EXPECT_EQ(*(other_it++), 15);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 TEST_F(ListOperationsTests, splice_with_first_to_last_it_with_both_empty) {
@@ -659,6 +719,40 @@ TEST_F(ListOperationsTests, splice_with_first_to_last_it_with_both_empty) {
     EXPECT_TRUE(it == mine.end());
     EXPECT_EQ(mine.size(), 0);
     EXPECT_EQ(other.size(), 0);
+}
+
+TEST_F(ListOperationsTests, splice_with_first_to_last_it_at_begin_rest_remains) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+
+    ft::list<int> other;
+    other.push_back(5);
+    other.push_back(6);
+    other.push_back(7);
+    other.push_back(8);
+    other.push_back(9);
+
+    ft::list<int>::iterator it = mine.begin();
+    ft::list<int>::iterator other_it = other.begin();
+    other_it++;
+    mine.splice(it, other, other_it, --(other.end()));
+    it = mine.begin();
+    other_it = other.begin();
+    EXPECT_EQ(mine.size(), 7);
+    EXPECT_EQ(other.size(), 2);
+    EXPECT_EQ(*(it++), 6);
+    EXPECT_EQ(*(it++), 7);
+    EXPECT_EQ(*(it++), 8);
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+    EXPECT_EQ(*(other_it++), 5);
+    EXPECT_EQ(*(other_it++), 9);
+    EXPECT_TRUE(other_it == other.end());
 }
 
 
