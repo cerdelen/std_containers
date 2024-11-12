@@ -364,6 +364,11 @@ namespace ft {
                 }
             }
 
+            void sort() {
+                __sort(*this);
+                // merge sort lol
+            }
+
             void print(){
                 std::cout << "[ ";
                 for(iterator it = this->begin(); it != this->end(); it++){
@@ -458,6 +463,35 @@ namespace ft {
                 this->_base.prev = &this->_base;
                 this->_size = 0;
             };
+
+            template< class  Compare = std::less<>>
+            void __sort(list& l, Compare comp = Compare()) {
+                if (l.size() <= 1)
+                    return ;
+
+                iterator it = l.begin();
+                for (size_type i = 0; i < l.size() / 2; i++)
+                    it++;
+                list right, left;
+                left.splice(left.begin(), l, l.begin(), it);
+                right.splice(right.begin(), l, l.begin(), l.end());
+
+                __sort(left, comp);
+                __sort(right, comp);
+
+                iterator it_r = right.begin();
+                iterator it_l = left.begin();
+                while (it_r != right.end() && it_l != left.end()) {
+                    it = l.end();
+                    if (comp(*it_l, *it_r)) {
+                        l.splice(it, left, it_l++, it_l);
+                    } else {
+                        l.splice(it, right, it_r++, it_r);
+                    }
+                }
+                l.splice(l.end(), left);
+                l.splice(l.end(), right);
+            }
     };
 }
 
