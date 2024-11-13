@@ -366,7 +366,11 @@ namespace ft {
 
             void sort() {
                 __sort(*this);
-                // merge sort lol
+            }
+
+            template< class Compare >
+            void sort(Compare comp) {
+                __sort(*this, comp);
             }
 
             void print(){

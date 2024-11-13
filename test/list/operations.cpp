@@ -1055,9 +1055,55 @@ TEST_F(ListOperationsTests, sort_on_empty_list) {
     EXPECT_EQ(mine.size(), 0);
 }
 
+TEST_F(ListOperationsTests, sort_with_compare_func) {
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(4);
+    mine.push_back(1);
+    mine.push_back(3);
+    mine.push_back(3);
+    mine.push_back(2);
+    mine.push_back(5);
 
+    mine.sort(std::greater<>());
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_TRUE(it == mine.end());
+}
 
+TEST_F(ListOperationsTests, sort_with_compare_func_iterator_stays_valid) {
+    mine.push_back(4);
+    mine.push_back(1);
+    mine.push_back(3);
+    mine.push_back(2);
+    mine.push_back(5);
 
+    ft::list<int>::iterator it = mine.begin();
+    mine.sort(std::greater<>());
+    EXPECT_EQ(*(it--), 4);
+    EXPECT_EQ(*(it--), 5);
+    EXPECT_EQ(*(++it), 5);
+    EXPECT_EQ(*(++it), 4);
+    EXPECT_EQ(*(++it), 3);
+    EXPECT_EQ(*(++it), 2);
+    EXPECT_EQ(*(++it), 1);
+    it++;
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, sort_with_compare_func_on_empty_list) {
+    ft::list<int>::iterator it = mine.begin();
+    mine.sort(std::greater<>());
+    EXPECT_TRUE(it == mine.begin());
+    EXPECT_EQ(mine.size(), 0);
+}
 
 
 
