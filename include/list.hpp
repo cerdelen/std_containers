@@ -373,6 +373,25 @@ namespace ft {
                 __sort(*this, comp);
             }
 
+
+            void assign( size_type count, const T& value ) {
+                this->clear();
+                while(count > 0) {
+                    this->push_back(value);
+                    count--;
+                }
+            }
+
+            template< class InputIt , typename = typename std::enable_if<!std::is_integral<InputIt>::value>::type>
+            void assign( InputIt first, InputIt last ) {
+                this->clear();
+                while(first != last) {
+                    this->push_back(*first);
+                    first++;
+                }
+            }
+
+
             void print(){
                 std::cout << "[ ";
                 for(iterator it = this->begin(); it != this->end(); it++){

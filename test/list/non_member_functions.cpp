@@ -275,3 +275,95 @@ TEST_F(ListNonMemberFunctionsTests, greater_than_or_equal_operator) {
     EXPECT_EQ((mine >= mine), true);
 }
 
+TEST_F(ListNonMemberFunctionsTests, assign_from_value_smaller_to_bigger) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+
+    mine.assign(5, 4);
+
+    EXPECT_EQ(mine.size(), 5);
+
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListNonMemberFunctionsTests, assign_from_value_bigger_to_smaller) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+
+    mine.assign(1, 4);
+
+    EXPECT_EQ(mine.size(), 1);
+
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_TRUE(it == mine.end());
+}
+
+
+TEST_F(ListNonMemberFunctionsTests, assign_from_range_smaller_to_bigger) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+
+    ft::list<int> other;
+    other.push_back(4);
+    other.push_back(5);
+    other.push_back(6);
+    other.push_back(7);
+
+    mine.assign(other.begin(), other.end());
+
+    EXPECT_EQ(mine.size(), 4);
+    EXPECT_EQ(other.size(), 4);
+
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 6);
+    EXPECT_EQ(*(it++), 7);
+    EXPECT_TRUE(it == mine.end());
+
+    ft::list<int>::iterator other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 4);
+    EXPECT_EQ(*(other_it++), 5);
+    EXPECT_EQ(*(other_it++), 6);
+    EXPECT_EQ(*(other_it++), 7);
+    EXPECT_TRUE(other_it == other.end());
+}
+
+TEST_F(ListNonMemberFunctionsTests, assign_from_range_bigger_to_smaller) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+
+    ft::list<int> other;
+    other.push_back(5);
+    other.push_back(6);
+    other.push_back(7);
+
+    mine.assign(other.begin(), other.end());
+
+    EXPECT_EQ(mine.size(), 3);
+    EXPECT_EQ(other.size(), 3);
+
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_EQ(*(it++), 6);
+    EXPECT_EQ(*(it++), 7);
+    EXPECT_TRUE(it == mine.end());
+
+    ft::list<int>::iterator other_it = other.begin();
+    EXPECT_EQ(*(other_it++), 5);
+    EXPECT_EQ(*(other_it++), 6);
+    EXPECT_EQ(*(other_it++), 7);
+    EXPECT_TRUE(other_it == other.end());
+}
