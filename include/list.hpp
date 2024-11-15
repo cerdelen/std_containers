@@ -515,7 +515,12 @@ namespace ft {
                 l.splice(l.end(), left);
                 l.splice(l.end(), right);
             }
-    };
+
+
+            inline allocator_type get_allocator() const {
+                return _alloc;
+            }
+        };
 }
 
 
