@@ -24,8 +24,8 @@ namespace ft {
 
             typedef typename ft::list_iterator<Node> 					iterator;
 			typedef	typename ft::const_list_iterator<const Node>		        const_iterator;
-			// typedef typename ft::reverse_iterator<iterator>					reverse_iterator;
-			// typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef typename ft::reverse_list_iterator<Node>					reverse_iterator;
+			typedef typename ft::const_reverse_list_iterator<const Node>			const_reverse_iterator;
 
             list() {
                 this->_base.next = &(this->_base);
@@ -203,6 +203,11 @@ namespace ft {
             iterator end() {return iterator(&this->_base);};
             const_iterator begin() const {return const_iterator(this->_base.next);};
             const_iterator end() const {return const_iterator(&this->_base);};
+
+            reverse_iterator rbegin() {return reverse_iterator(this->_base.prev);};
+            reverse_iterator rend() {return reverse_iterator(&this->_base);};
+            const_reverse_iterator rbegin() const {return const_reverse_iterator(this->_base.prev);};
+            const_reverse_iterator rend() const {return const_reverse_iterator(&this->_base);};
 
             // Parameters
             //     (none)

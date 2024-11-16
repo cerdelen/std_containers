@@ -2,6 +2,7 @@
 #include "iterator_base.hpp"
 
 namespace ft {
+
     template<class node_type>
 	struct const_list_iterator;
 
@@ -181,4 +182,184 @@ namespace ft {
 
             node_ptr			_ptr;
     };
+
+    template<class node_type>
+	struct const_reverse_list_iterator;
+    template<class node_type>
+	struct reverse_list_iterator : ft::iterator<ft::bidirectional_iterator_tag, typename node_type::value_type>
+    {
+        public:
+            typedef typename	node_type::value_type																	value_type;
+            typedef				node_type*																				node_ptr;
+
+            typedef typename	node_type::value_type*																	value_ptr;
+            typedef typename	node_type::value_type&																	value_ref;
+
+            typedef typename	ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category				iterator_category;
+            typedef typename	ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type				difference_type;
+            typedef typename	ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer						pointer;
+            typedef typename	ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference						reference;
+
+			~reverse_list_iterator() {};
+
+			reverse_list_iterator( void ) : _ptr(nullptr) { }
+
+			reverse_list_iterator(node_ptr input) : _ptr(input) { }
+
+			reverse_list_iterator(const reverse_list_iterator &copy) { *this = copy; }
+
+			reverse_list_iterator	&operator=(const reverse_list_iterator &copy) {
+				_ptr = copy._ptr;
+				return (*this);
+			}
+
+			value_ref			operator*( void ) const {
+				return (*_ptr->val);
+			}
+
+			value_ptr			operator->( void ) const {
+				return (_ptr->val);
+			}
+
+			reverse_list_iterator		&operator--( void ) {
+                _ptr = _ptr->next;
+				return (*this);
+			}
+
+			reverse_list_iterator		&operator++( void ) {
+                _ptr = _ptr->prev;
+				return (*this);
+			}
+
+			reverse_list_iterator		operator++( int ) {
+				reverse_list_iterator		tmp(*this);
+				++(*this);
+				return (tmp);
+			}
+
+			reverse_list_iterator		operator--( int )
+			{
+				reverse_list_iterator		tmp(*this);
+				--(*this);
+				return (tmp);
+			}
+
+			bool				operator==( const reverse_list_iterator<node_type> & other ) const
+			{
+				return (_ptr == other._ptr);
+			}
+
+			bool				operator!=( const reverse_list_iterator<node_type> & other ) const
+			{
+				return (_ptr != other._ptr);
+			}
+
+            template<typename T>
+			bool				operator==( const const_reverse_list_iterator<T> & other ) const
+			{
+				return (_ptr == other._ptr);
+			}
+
+            template<typename T>
+			bool				operator!=( const const_reverse_list_iterator<T> & other ) const
+			{
+				return (_ptr != other._ptr);
+			}
+
+            node_ptr			_ptr;
+    };
+
+    template<class node_type>
+	struct const_reverse_list_iterator : ft::iterator<ft::bidirectional_iterator_tag, typename node_type::value_type>
+	{
+        public:
+            typedef const typename	node_type::value_type																value_type;
+            typedef				node_type*																				node_ptr;
+
+            typedef const typename	node_type::value_type*																	value_ptr;
+            typedef const typename	node_type::value_type&																	value_ref;
+
+            typedef typename	ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category				iterator_category;
+            typedef typename	ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type				difference_type;
+            typedef typename	ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer						pointer;
+            typedef typename	ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference						reference;
+
+			~const_reverse_list_iterator() {};
+
+			const_reverse_list_iterator( void ) : _ptr(nullptr) { }
+
+			const_reverse_list_iterator(node_ptr input) : _ptr(input) { }
+
+            template<typename T>
+			const_reverse_list_iterator(const reverse_list_iterator<T> &copy) { *this = copy; }
+
+			const_reverse_list_iterator(const const_reverse_list_iterator &copy) { *this = copy; }
+
+			const_reverse_list_iterator	&operator=(const const_reverse_list_iterator &copy) {
+				_ptr = copy._ptr;
+				return (*this);
+			}
+
+            template<typename T>
+			const_reverse_list_iterator	&operator=(const reverse_list_iterator<T> &copy) {
+				_ptr = copy._ptr;
+				return (*this);
+			}
+
+			value_ref			operator*( void ) const {
+				return (*_ptr->val);
+			}
+
+			value_ptr			operator->( void ) const {
+				return (_ptr->val);
+			}
+
+			const_reverse_list_iterator		&operator--( void ) {
+                _ptr = _ptr->next;
+				return (*this);
+			}
+
+			const_reverse_list_iterator		&operator++( void ) {
+                _ptr = _ptr->prev;
+				return (*this);
+			}
+
+			const_reverse_list_iterator		operator++( int ) {
+				const_reverse_list_iterator		tmp(*this);
+				++(*this);
+				return (tmp);
+			}
+
+			const_reverse_list_iterator		operator--( int )
+			{
+				const_reverse_list_iterator		tmp(*this);
+				--(*this);
+				return (tmp);
+			}
+
+			bool				operator==( const const_reverse_list_iterator<node_type> & other ) const
+			{
+				return (_ptr == other._ptr);
+			}
+
+			bool				operator!=( const const_reverse_list_iterator<node_type> & other ) const
+			{
+				return (_ptr != other._ptr);
+			}
+
+            template<typename T>
+			bool				operator==( const reverse_list_iterator<T> & other ) const
+			{
+				return (_ptr == other._ptr);
+			}
+
+            template<typename T>
+			bool				operator!=( const reverse_list_iterator<T> & other ) const
+			{
+				return (_ptr != other._ptr);
+			}
+
+            node_ptr			_ptr;
+    };
 }
+
