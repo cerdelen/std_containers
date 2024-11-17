@@ -396,6 +396,19 @@ namespace ft {
                 }
             }
 
+            inline allocator_type get_allocator() const {
+                return _alloc;
+            }
+
+            void remove( const T& value ) {
+                for (iterator it = this->begin(); it != this->end();) {
+                    if (*it == value)
+                        it = this->erase(it);
+                    else
+                        it++;
+                }
+            }
+
 
             void print(){
                 std::cout << "[ ";
@@ -522,9 +535,6 @@ namespace ft {
             }
 
 
-            inline allocator_type get_allocator() const {
-                return _alloc;
-            }
         };
 }
 
