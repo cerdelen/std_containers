@@ -1179,7 +1179,87 @@ TEST_F(ListOperationsTests, remove_on_empty) {
     EXPECT_TRUE(it == mine.end());
 }
 
+// remove_if
 
+bool remove_if_func_one(int i) { return i == 1; };
+bool remove_if_func_two(int i) { return i == 2; };
+bool remove_if_func_three(int i) { return i == 3; };
+bool remove_if_func_four(int i) { return i == 4; };
+bool remove_if_func_five(int i) { return i == 5; };
+bool remove_if_func_eight(int i) { return i == 8; };
+bool remove_if_func_nine(int i) { return i == 9; };
+TEST_F(ListOperationsTests, remove_if_once) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(5);
+
+    mine.remove_if(remove_if_func_two);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, remove_if_multiple) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(5);
+
+    mine.remove_if(remove_if_func_two);
+    mine.remove_if(remove_if_func_three);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, remove_if_all) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(5);
+
+    mine.remove_if(remove_if_func_one);
+    mine.remove_if(remove_if_func_two);
+    mine.remove_if(remove_if_func_three);
+    mine.remove_if(remove_if_func_four);
+    mine.remove_if(remove_if_func_five);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, remove_if_non_existant) {
+    mine.push_back(1);
+    mine.push_back(2);
+    mine.push_back(3);
+    mine.push_back(4);
+    mine.push_back(5);
+
+    mine.remove_if(remove_if_func_eight);
+    mine.remove_if(remove_if_func_nine);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_EQ(*(it++), 1);
+    EXPECT_EQ(*(it++), 2);
+    EXPECT_EQ(*(it++), 3);
+    EXPECT_EQ(*(it++), 4);
+    EXPECT_EQ(*(it++), 5);
+    EXPECT_TRUE(it == mine.end());
+}
+
+TEST_F(ListOperationsTests, remove_if_on_empty) {
+    mine.remove_if(remove_if_func_eight);
+    mine.remove_if(remove_if_func_nine);
+    ft::list<int>::iterator it = mine.begin();
+    EXPECT_TRUE(it == mine.end());
+}
 
 
 

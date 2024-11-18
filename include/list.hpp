@@ -409,6 +409,16 @@ namespace ft {
                 }
             }
 
+            template< class UnaryPredicate >
+            void remove_if( UnaryPredicate p ) {
+                for (iterator it = this->begin(); it != this->end();) {
+                    if (p(*it))
+                        it = this->erase(it);
+                    else
+                        it++;
+                }
+            }
+
 
             void print(){
                 std::cout << "[ ";
